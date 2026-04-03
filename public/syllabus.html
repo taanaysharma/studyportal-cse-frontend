@@ -3,1014 +3,1042 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B.Tech CSE - 4th Semester Syllabus | MANIT Bhopal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>B.Tech CSE - 4th Semester Syllabus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #3b82f6;
-            --accent2: #6366f1;
-            --surface: #1e293b;
-            --surface2: #334155;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --card-bg: #1e293b;
-            --highlight: #38bdf8;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--primary);
+            font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: black;
             min-height: 100vh;
-            color: var(--text);
+            padding: 20px;
+            color: #333;
         }
 
-        /* ─── HEADER ─── */
-        .header {
-            position: relative;
-            padding: 60px 40px 50px;
-            text-align: center;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            border-bottom: 1px solid var(--border);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .header::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(59,130,246,0.18) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 40% at 80% 50%, rgba(99,102,241,0.10) 0%, transparent 70%);
-            pointer-events: none;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
         }
 
-        .header-badge {
-            display: inline-block;
-            background: rgba(59,130,246,0.12);
-            border: 1px solid rgba(59,130,246,0.3);
-            color: var(--highlight);
-            font-family: 'Syne', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            padding: 6px 18px;
-            border-radius: 999px;
-            margin-bottom: 20px;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
 
         .header h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.4rem);
-            font-weight: 800;
-            line-height: 1.1;
-            color: var(--text);
-            letter-spacing: -0.02em;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
             position: relative;
             z-index: 1;
-        }
-
-        .header h1 span {
-            background: linear-gradient(90deg, var(--accent), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .header p {
-            margin-top: 14px;
-            color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.9;
             position: relative;
             z-index: 1;
         }
 
-        /* ─── GRID ─── */
-        .selector {
-            padding: 40px;
-        }
-
-        .selector-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 24px;
+        .subject-selector {
+            padding: 30px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .subject-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
         .subject-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 24px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .subject-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
         .subject-card:hover {
-            border-color: rgba(59,130,246,0.5);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
         }
 
-        .subject-card:hover::before { opacity: 1; }
-
-        .card-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            margin-bottom: 16px;
+        .subject-card.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
         }
 
         .subject-card h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 1.1rem;
+            font-weight: 600;
             margin-bottom: 8px;
-            line-height: 1.3;
         }
 
         .subject-card p {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 14px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
         }
 
         .subject-code {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
             display: inline-block;
-            background: rgba(59,130,246,0.12);
-            color: var(--highlight);
-            border: 1px solid rgba(59,130,246,0.25);
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            padding: 4px 10px;
-            border-radius: 6px;
         }
 
-        /* ─── DETAIL VIEW ─── */
         .subject-details {
             display: none;
-            padding: 40px;
-            animation: slideIn 0.35s ease;
+            padding: 30px;
+            background: white;
         }
 
-        .subject-details.active { display: block; }
+        .subject-details.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(16px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            margin-bottom: 32px;
-            transition: all 0.2s ease;
-        }
-        .back-btn:hover {
-            background: var(--surface2);
-            border-color: rgba(59,130,246,0.4);
-        }
-
-        .detail-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 32px;
-            padding-bottom: 32px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .detail-icon {
-            width: 56px; height: 56px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            flex-shrink: 0;
-        }
-
-        .detail-header h2 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.7rem;
-            font-weight: 800;
-            line-height: 1.2;
-        }
-
-        .detail-header .meta {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .meta-tag {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.78rem;
-            padding: 4px 12px;
-            border-radius: 6px;
         }
 
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 14px;
-            margin-bottom: 28px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .info-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 10px;
-            padding: 18px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
         }
 
         .info-card h4 {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #667eea;
             margin-bottom: 10px;
         }
 
-        .info-card p, .info-card li {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.6;
+        .info-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
-        .info-card ul { padding-left: 16px; }
-
-        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
-
-        .prereq-tag {
-            background: rgba(99,102,241,0.12);
-            border: 1px solid rgba(99,102,241,0.3);
-            color: #a5b4fc;
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        /* ─── COLLAPSIBLE ─── */
         .collapsible-section {
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             overflow: hidden;
         }
 
         .collapsible-header {
-            background: var(--surface);
-            padding: 16px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
             cursor: pointer;
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
         }
 
-        .collapsible-header:hover { background: var(--surface2); }
+        .collapsible-header:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
 
-        .collapsible-header span:first-child {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+        }
+
+        .collapsible-content.active {
+            max-height: 2500px; /* Increased to accommodate longer tables */
+        }
+
+        .collapsible-inner {
+            padding: 20px;
+        }
+
+        .collapsible-inner h4 {
+            margin-top: 15px;
+            margin-bottom: 8px;
+            color: #2a5298;
+        }
+        
+        .collapsible-inner p {
+            margin-bottom: 15px;
+            line-height: 1.6;
         }
 
         .arrow {
-            color: var(--text-muted);
-            font-size: 0.8rem;
             transition: transform 0.3s ease;
         }
 
-        .arrow.open { transform: rotate(180deg); }
-
-        .collapsible-body {
-            display: none;
-            padding: 24px;
-            background: var(--primary);
-            border-top: 1px solid var(--border);
+        .arrow.active {
+            transform: rotate(180deg);
         }
 
-        .collapsible-body.open { display: block; }
-
-        /* ─── TABLE ─── */
         .lecture-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        .lecture-table th,
+        .lecture-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .lecture-table th {
-            background: var(--surface);
-            color: var(--accent);
-            font-family: 'Syne', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .lecture-table td {
-            padding: 11px 16px;
-            border-bottom: 1px solid rgba(51,65,85,0.5);
-            color: var(--text-muted);
-            vertical-align: top;
-        }
-
-        .lecture-table td:first-child {
-            color: var(--highlight);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             font-weight: 600;
-            white-space: nowrap;
-            width: 80px;
+            color: #667eea;
         }
 
-        .lecture-table tr:hover td { background: rgba(59,130,246,0.04); color: var(--text); }
+        .lecture-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
 
-        /* ─── OUTCOMES ─── */
         .outcomes-list {
             list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            padding: 0;
         }
 
         .outcomes-list li {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            border-radius: 0 8px 8px 0;
-            padding: 14px 16px;
-            font-size: 0.87rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            position: relative;
         }
 
-        .outcome-num {
-            min-width: 24px;
-            height: 24px;
-            background: var(--accent);
+        .outcomes-list li::before {
+            content: counter(outcome-counter);
+            counter-increment: outcome-counter;
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #667eea;
             color: white;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.72rem;
-            font-weight: 700;
-            flex-shrink: 0;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        /* ─── BOOKS ─── */
+        .outcomes-list {
+            counter-reset: outcome-counter;
+            padding-left: 20px;
+        }
+
         .books-list {
             list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            padding: 0;
         }
 
         .books-list li {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-left: 3px solid #22c55e;
-            border-radius: 0 8px 8px 0;
-            padding: 12px 16px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
         }
 
         .book-title {
-            font-size: 0.88rem;
             font-weight: 600;
-            color: #4ade80;
-            margin-bottom: 4px;
+            color: #28a745;
+            margin-bottom: 5px;
         }
 
         .book-author {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .prerequisite-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .prerequisite-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 0.8rem;
-            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        .content-block {
-            margin-bottom: 16px;
+        .back-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
         }
 
-        .content-block h4 {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--highlight);
-            margin-bottom: 6px;
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .content-block p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* ─── ICON COLORS ─── */
-        .icon-blue { background: rgba(59,130,246,0.15); }
-        .icon-purple { background: rgba(99,102,241,0.15); }
-        .icon-green { background: rgba(34,197,94,0.15); }
-        .icon-orange { background: rgba(251,146,60,0.15); }
-        .icon-pink { background: rgba(236,72,153,0.15); }
-        .icon-teal { background: rgba(20,184,166,0.15); }
-
-        @media (max-width: 640px) {
-            .header { padding: 40px 20px 30px; }
-            .selector, .subject-details { padding: 20px; }
-            .detail-header { flex-direction: column; }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .subject-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="header">
-    <div class="header-badge">MANIT Bhopal · CSE Department</div>
-    <h1>B.Tech CSE<br><span>4th Semester Syllabus</span></h1>
-    <p>Year II · Session January–June 2025/2026 · 2024 Batch Onwards</p>
-</div>
-
-<!-- SUBJECT GRID -->
-<div class="selector" id="subjectSelector">
-    <div class="selector-title">Select a subject to explore</div>
-    <div class="subject-grid">
-
-        <div class="subject-card" onclick="showSubject('ada')">
-            <div class="card-icon icon-blue">🧮</div>
-            <h3>Algorithm Design & Analysis</h3>
-            <p>Complexity analysis, divide & conquer, greedy, dynamic programming, NP-completeness</p>
-            <span class="subject-code">CSE 221</span>
+    <div class="container">
+        <div class="header">
+            <h1>B.Tech CSE Syllabus</h1>
+            <p>Semester IV - Year II • Maulana Azad National Institute of Technology</p>
         </div>
 
-        <div class="subject-card" onclick="showSubject('cso')">
-            <div class="card-icon icon-purple">💻</div>
-            <h3>Computer System Organization</h3>
-            <p>CPU architecture, ALU, control unit, memory hierarchy, I/O organization, pipeline</p>
-            <span class="subject-code">CSE 222 / CSE 24222</span>
-        </div>
-
-        <div class="subject-card" onclick="showSubject('hum')">
-            <div class="card-icon icon-orange">🚀</div>
-            <h3>Fundamentals of Entrepreneurship</h3>
-            <p>Industrial laws, entrepreneurial motivation, government initiatives, rural entrepreneurship</p>
-            <span class="subject-code">HUM 251</span>
-        </div>
-
-        <div class="subject-card" onclick="showSubject('se')">
-            <div class="card-icon icon-green">⚙️</div>
-            <h3>Software Engineering</h3>
-            <p>SDLC models, project management, estimation, design, testing, emerging trends</p>
-            <span class="subject-code">CSE 24221</span>
-        </div>
-
-        <div class="subject-card" onclick="showSubject('dc')">
-            <div class="card-icon icon-teal">📡</div>
-            <h3>Data Communications</h3>
-            <p>Signals, transmission media, modulation, multiplexing, error detection, cryptography</p>
-            <span class="subject-code">CSE 224</span>
-        </div>
-
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════════
-     ADA
-══════════════════════════════════════════════ -->
-<div class="subject-details" id="ada">
-    <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
-
-    <div class="detail-header">
-        <div class="detail-icon icon-blue">🧮</div>
-        <div>
-            <h2>Algorithm Design & Analysis</h2>
-            <div class="meta">
-                <span class="meta-tag">CSE 221</span>
-                <span class="meta-tag">Core</span>
-                <span class="meta-tag">B.Tech · Semester IV · Year II</span>
+        <div class="subject-selector" id="subjectSelector">
+            <h2 style="margin-bottom: 20px; color: #333; font-weight: 600;">Select a Subject</h2>
+            <div class="subject-grid">
+                <div class="subject-card" onclick="showSubject('cse221')">
+                    <h3>Algorithm Design & Analysis</h3>
+                    <p>Time/Space complexity, Divide and conquer, Greedy, Dynamic programming, Graph algorithms</p>
+                    <span class="subject-code">CSE 221</span>
+                </div>
+                <div class="subject-card" onclick="showSubject('cse222')">
+                    <h3>Computer System Organization</h3>
+                    <p>Basic computer architecture, Control unit, ALU design, Memory and I/O organization</p>
+                    <span class="subject-code">CSE 222</span>
+                </div>
+                <div class="subject-card" onclick="showSubject('cse24221')">
+                    <h3>Software Engineering</h3>
+                    <p>SDLC, Process models, Project estimation, Software testing, Agile and Web App adoption</p>
+                    <span class="subject-code">CSE 24221</span>
+                </div>
+                <div class="subject-card" onclick="showSubject('cse224')">
+                    <h3>Data Communication</h3>
+                    <p>Switching/Routing, Layered architecture, Transmission media, Modulation, Multiplexing</p>
+                    <span class="subject-code">CSE 224</span>
+                </div>
+                <div class="subject-card" onclick="showSubject('hum251')">
+                    <h3>Fundamentals of Entrepreneurship</h3>
+                    <p>Entrepreneurship basics, Industrial Laws, Motivation theories, Government schemes</p>
+                    <span class="subject-code">HUM 251</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="info-grid">
-        <div class="info-card">
-            <h4>Prerequisites</h4>
-            <div class="tag-list">
-                <span class="prereq-tag">Data Structures</span>
-                <span class="prereq-tag">Basic Programming</span>
+        <!-- CSE 221 (ADA) Details -->
+        <div class="subject-details" id="cse221">
+            <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Course Information - Algorithm Design & Analysis</h4>
+                    <p><strong>Code:</strong> CSE 221<br>
+                    <strong>Type:</strong> Core<br>
+                    <strong>Semester:</strong> IV</p>
+                </div>
+                <div class="info-card">
+                    <h4>Prerequisites</h4>
+                    <div class="prerequisite-tags">
+                        <span class="prerequisite-tag">Data Structure</span>
+                        <span class="prerequisite-tag">Basics of Computer Programming</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('outcomes-cse221')">
+                    <span>Course Outcomes</span>
+                    <span class="arrow" id="arrow-outcomes-cse221">▼</span>
+                </div>
+                <div class="collapsible-content" id="outcomes-cse221">
+                    <div class="collapsible-inner">
+                        <ol class="outcomes-list">
+                            <li>Analyze time and space complexity for the given algorithms.</li>
+                            <li>Use various searching, sorting and graph traversal algorithms.</li>
+                            <li>Use various techniques for efficient algorithm design like divide and conquer, greedy and dynamic algorithms.</li>
+                            <li>Describe minimum spanning tree algorithms, Single source shortest path, all pair shortest path algorithms in a graph and backtracking concepts.</li>
+                            <li>Describe polynomial and non-polynomial problems, classify NP hard and NP complete problems with their application.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('content-cse221')">
+                    <span>Course Content</span>
+                    <span class="arrow" id="arrow-content-cse221">▼</span>
+                </div>
+                <div class="collapsible-content" id="content-cse221">
+                    <div class="collapsible-inner">
+                        <h4>1. Fundamentals of Algorithm</h4>
+                        <p>Analysis of complexity, recurrence relations, disjoint set structure.</p>
+                        
+                        <h4>2. Algorithm Design Techniques</h4>
+                        <p>Algorithm design techniques and Masters Theorem to compute algorithms time complexity.</p>
+                        
+                        <h4>3. Core Algorithmic Paradigms</h4>
+                        <p>Greedy algorithm and Dynamic programming concepts.</p>
+                        
+                        <h4>4. Graph Algorithms</h4>
+                        <p>Spanning Tree algorithms, graph shortest path algorithms.</p>
+                        
+                        <h4>5. Advanced Traversal & Backtracking</h4>
+                        <p>Branch and Bound techniques, Backtracking algorithms and graph traversal algorithms (BFS and DFS).</p>
+                        
+                        <h4>6. Computational Complexity</h4>
+                        <p>Introduction of NP-completeness and NP-hardness problems.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('books-cse221')">
+                    <span>Textbooks & References</span>
+                    <span class="arrow" id="arrow-books-cse221">▼</span>
+                </div>
+                <div class="collapsible-content" id="books-cse221">
+                    <div class="collapsible-inner">
+                        <h4>Textbooks</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Fundamentals of Computer Algorithms</div>
+                                <div class="book-author">Horowitz Ellis and Sartaj Sahni</div>
+                            </li>
+                            <li>
+                                <div class="book-title">An Introduction to Algorithm</div>
+                                <div class="book-author">Thomas H. Cormen, Ronald L. Rivest</div>
+                            </li>
+                        </ul>
+                        
+                        <h4>Reference Books</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Algorithms</div>
+                                <div class="book-author">Sanjoy Dasgupta, Christos Papadimitriou, Umesh Vazirani</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Data Structures and Algorithms Made Easy: Data Structure and Algorithmic Puzzles</div>
+                                <div class="book-author">Narasimha Karumanchi</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="info-card">
-            <h4>Textbooks</h4>
-            <ul>
-                <li>Fundamentals of Computer Algorithms – Horowitz, Sahni</li>
-                <li>Introduction to Algorithms – Cormen, Rivest</li>
-            </ul>
-        </div>
-        <div class="info-card">
-            <h4>Reference Books</h4>
-            <ul>
-                <li>Algorithms – Dasgupta, Papadimitriou, Vazirani</li>
-                <li>Data Structures & Algorithms Made Easy – Narasimha</li>
-            </ul>
-        </div>
-    </div>
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Course Outcomes</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <ul class="outcomes-list">
-                <li><span class="outcome-num">1</span>Analyze time and space complexity for given algorithms.</li>
-                <li><span class="outcome-num">2</span>Use various searching, sorting and graph traversal algorithms.</li>
-                <li><span class="outcome-num">3</span>Apply efficient design techniques: divide & conquer, greedy, and dynamic programming.</li>
-                <li><span class="outcome-num">4</span>Describe MST algorithms, single-source & all-pair shortest path, and backtracking.</li>
-                <li><span class="outcome-num">5</span>Classify NP-hard and NP-complete problems and describe their applications.</li>
-            </ul>
-        </div>
-    </div>
+        <!-- CSE 222 (CSO) Details -->
+        <div class="subject-details" id="cse222">
+            <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Course Information - Computer System Organization</h4>
+                    <p><strong>Code:</strong> CSE 222 (CSE 24222)<br>
+                    <strong>Type:</strong> Core<br>
+                    <strong>Semester:</strong> IV</p>
+                </div>
+                <div class="info-card">
+                    <h4>Prerequisites</h4>
+                    <div class="prerequisite-tags">
+                        <span class="prerequisite-tag">Digital Circuit Design (CSE-214)</span>
+                    </div>
+                </div>
+            </div>
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Course Content</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <div class="content-block"><h4>1. Fundamentals of Algorithms</h4><p>Analysis of complexity, recurrence relations, disjoint set structure.</p></div>
-            <div class="content-block"><h4>2. Algorithm Design Techniques</h4><p>Master's Theorem, divide and conquer strategies, computing time complexity.</p></div>
-            <div class="content-block"><h4>3. Greedy & Dynamic Programming</h4><p>Greedy algorithm paradigms and dynamic programming concepts with classic examples.</p></div>
-            <div class="content-block"><h4>4. Graph Algorithms</h4><p>Spanning tree algorithms (Prim, Kruskal), shortest path algorithms (Dijkstra, Floyd-Warshall).</p></div>
-            <div class="content-block"><h4>5. Branch & Bound / Backtracking / BFS / DFS</h4><p>Branch and bound techniques, backtracking algorithms, graph traversal (BFS and DFS).</p></div>
-            <div class="content-block"><h4>6. NP-Completeness</h4><p>Introduction to P, NP, NP-hard and NP-complete problems and their classifications.</p></div>
-        </div>
-    </div>
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('outcomes-cse222')">
+                    <span>Course Outcomes</span>
+                    <span class="arrow" id="arrow-outcomes-cse222">▼</span>
+                </div>
+                <div class="collapsible-content" id="outcomes-cse222">
+                    <div class="collapsible-inner">
+                        <ol class="outcomes-list">
+                            <li>Understand the physical organization of digital computers, including their registers, data flow, microoperations, and control functions.</li>
+                            <li>Use various instructions from basic computers to write assembly-language instructions for different data processing tasks.</li>
+                            <li>Compare the performance of digital computers with varying architectural choices and evaluate using AMDHAL's Law.</li>
+                            <li>Comprehend the organization and implementation of computer memories.</li>
+                            <li>Gain knowledge of the methods used by digital computers for interfacing with a variety of input/output devices.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Online Resources</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <ul class="books-list">
-                <li><div class="book-title">NPTEL Course</div><div class="book-author">https://nptel.ac.in/courses/106101060/</div></li>
-                <li><div class="book-title">Stanford CS161</div><div class="book-author">http://web.stanford.edu/class/cs161/schedule.html</div></li>
-                <li><div class="book-title">Coursera – Algorithms Specialization</div><div class="book-author">https://www.coursera.org/specializations/algorithms</div></li>
-            </ul>
-        </div>
-    </div>
-</div>
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('content-cse222')">
+                    <span>Course Content</span>
+                    <span class="arrow" id="arrow-content-cse222">▼</span>
+                </div>
+                <div class="collapsible-content" id="content-cse222">
+                    <div class="collapsible-inner">
+                        <h4>1. Basic Computer Organization and Central Processor</h4>
+                        <p>Overview of basic computer organization and design, Central processor organizations: basic building blocks, bus organized computer memory, address structure, register transfer languages, instruction formats, expanding op-codes and addressing modes.</p>
+                        
+                        <h4>2. Control Unit Organization</h4>
+                        <p>Hardwired control & microprogrammed control organization, control memory, address sequencing micro-instruction formats, micro-program sequencer, and micro-programming.</p>
+                        
+                        <h4>3. Arithmetic Processor Design & Pipelining</h4>
+                        <p>Addition and subtraction algorithm, multiplication algorithm, division algorithm, processor configuration, and floating-point arithmetic. Performance evaluation of processors. Introduction to pipeline processing, pipeline hazards.</p>
+                        
+                        <h4>4. Input-Output Organization</h4>
+                        <p>Asynchronous Data Transfer, Asynchronous Communication Interface, Modes of Transfer: Interrupt-Initiated, Direct Memory Access (DMA).</p>
+                        
+                        <h4>5. Memory Organization</h4>
+                        <p>Main Memory, Auxiliary Memory, Associative Memory: Hardware Organization, Cache Memory: Mapping Schemes.</p>
+                    </div>
+                </div>
+            </div>
 
-<!-- ══════════════════════════════════════════════
-     CSO
-══════════════════════════════════════════════ -->
-<div class="subject-details" id="cso">
-    <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('books-cse222')">
+                    <span>Textbooks & References</span>
+                    <span class="arrow" id="arrow-books-cse222">▼</span>
+                </div>
+                <div class="collapsible-content" id="books-cse222">
+                    <div class="collapsible-inner">
+                        <h4>Textbooks</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Computer System Architecture</div>
+                                <div class="book-author">M. Morris Mano</div>
+                            </li>
+                        </ul>
+                        
+                        <h4>Reference Books</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Computer Organization and Architecture</div>
+                                <div class="book-author">William Stallings</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Computer Architecture (Schaum's Outlines)</div>
+                                <div class="book-author">Nicholas Carter</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-    <div class="detail-header">
-        <div class="detail-icon icon-purple">💻</div>
-        <div>
-            <h2>Computer System Organization</h2>
-            <div class="meta">
-                <span class="meta-tag">CSE 222 / CSE 24222</span>
-                <span class="meta-tag">Core</span>
-                <span class="meta-tag">B.Tech · Semester IV · Year II</span>
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('lectures-cse222')">
+                    <span>Lecture Plan (38 Lectures)</span>
+                    <span class="arrow" id="arrow-lectures-cse222">▼</span>
+                </div>
+                <div class="collapsible-content" id="lectures-cse222">
+                    <div class="collapsible-inner">
+                        <table class="lecture-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Topic to be covered</th>
+                                    <th>No. of Lectures</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Overview of basic computer organization and design. Data formats: Fixed Point Data & Floating-Point Data.</td><td>03</td></tr>
+                                <tr><td>2</td><td>Central processor organizations: basic building blocks</td><td>01</td></tr>
+                                <tr><td>3</td><td>General Register Organization, Stack Organization, Bus organized computer memory, Bus structure.</td><td>03</td></tr>
+                                <tr><td>4</td><td>Register transfer languages, Instruction Types, expanding op-codes, Addressing Modes.</td><td>03</td></tr>
+                                <tr><td>5</td><td>Microinstruction formats.</td><td>01</td></tr>
+                                <tr><td>6</td><td>Control unit organization: hardwired control & microprogrammed control organization</td><td>02</td></tr>
+                                <tr><td>7</td><td>Micro-instruction formats, Micro-program sequencer, Control memory.</td><td>02</td></tr>
+                                <tr><td>8</td><td>Horizontal and Vertical micro-programming.</td><td>01</td></tr>
+                                <tr><td>9</td><td>Arithmetic processor design: Fixed point signed addition and subtraction algorithm.</td><td>02</td></tr>
+                                <tr><td>10</td><td>Multiplication of two signed magnitude numbers, Booth's multiplication, Array Multiplier, Division algorithm.</td><td>02</td></tr>
+                                <tr><td>11</td><td>Performance evaluation of processors, AMDHAL's Law</td><td>02</td></tr>
+                                <tr><td>12</td><td>Introduction to pipeline processing, pipeline hazards.</td><td>05</td></tr>
+                                <tr><td>13</td><td>Input-Output organization: Asynchronous Data Transfer, Asynchronous Communication Interface.</td><td>02</td></tr>
+                                <tr><td>14</td><td>Modes of Data Transfer: Program Controlled, Interrupt-Initiated, Direct Memory Access (DMA).</td><td>03</td></tr>
+                                <tr><td>15</td><td>Memory Organization: Memory Categorization, Horizontal and Vertical Expansion of Memory, Memory Access Time.</td><td>03</td></tr>
+                                <tr><td>16</td><td>Hardware Organization, Cache Memory: Mapping Schemes</td><td>03</td></tr>
+                                <tr><td colspan="2" style="text-align: right; font-weight: bold;">Total</td><td style="font-weight: bold;">38</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="info-grid">
-        <div class="info-card">
-            <h4>Prerequisites</h4>
-            <div class="tag-list">
-                <span class="prereq-tag">Digital Circuit Design (CSE-214)</span>
+        <!-- CSE 24221 (SE) Details -->
+        <div class="subject-details" id="cse24221">
+            <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Course Information - Software Engineering</h4>
+                    <p><strong>Code:</strong> CSE 24221<br>
+                    <strong>Type:</strong> Core<br>
+                    <strong>Semester:</strong> IV</p>
+                </div>
+                <div class="info-card">
+                    <h4>Prerequisites</h4>
+                    <div class="prerequisite-tags">
+                        <span class="prerequisite-tag">Basic Programming Concepts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('content-cse24221')">
+                    <span>Course Content Overview</span>
+                    <span class="arrow" id="arrow-content-cse24221">▼</span>
+                </div>
+                <div class="collapsible-content" id="content-cse24221">
+                    <div class="collapsible-inner">
+                        <p>This course covers the systematic approach to the development, operation, and maintenance of software. It spans SDLC phases, process models (Waterfall, Agile, Spiral), and essential management topics such as Risk Management, Quality Assurance, and ISO/CMM standards.</p>
+                        <p>Key technical areas include Software Project Management (Scheduling, Estimation, COCOMO/Putnam Models, Halstead metrics), structural Software Design methodologies, Coding practices, and rigorous Software Testing techniques. The course also details contemporary adoptions like Low-code/No-code, Cloud Computing, Progressive Web Apps, and the integration of AI/Machine Learning in Software Engineering.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('books-cse24221')">
+                    <span>Textbooks & References</span>
+                    <span class="arrow" id="arrow-books-cse24221">▼</span>
+                </div>
+                <div class="collapsible-content" id="books-cse24221">
+                    <div class="collapsible-inner">
+                        <h4>Textbooks</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Fundamentals of Software Engineering</div>
+                                <div class="book-author">Rajib Mall, PHI Learning Pvt Ltd.</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Software Engineering: A Practitioner's Approach</div>
+                                <div class="book-author">Roger S. Pressman, McGraw-Hill International edition.</div>
+                            </li>
+                            <li>
+                                <div class="book-title">An Integrated Approach to Software Engineering</div>
+                                <div class="book-author">Pankaj Jalote, Narosa Publishing House.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('lectures-cse24221')">
+                    <span>Lecture Plan (40 Lectures)</span>
+                    <span class="arrow" id="arrow-lectures-cse24221">▼</span>
+                </div>
+                <div class="collapsible-content" id="lectures-cse24221">
+                    <div class="collapsible-inner">
+                        <table class="lecture-table">
+                            <thead>
+                                <tr><th>Lecture</th><th>Topic</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Introduction and importance of Software Engineering</td></tr>
+                                <tr><td>2</td><td>Types of Softwares and Introduction to SDLC</td></tr>
+                                <tr><td>3</td><td>Phases of SDLC</td></tr>
+                                <tr><td>4</td><td>Process Models: Water fall model and Prototyping model</td></tr>
+                                <tr><td>5</td><td>RAD and Incremental Process Models</td></tr>
+                                <tr><td>6</td><td>Spiral Model and Win Win Spiral Model</td></tr>
+                                <tr><td>7</td><td>Agile Model, Extreme Programming</td></tr>
+                                <tr><td>8</td><td>CASE tools</td></tr>
+                                <tr><td>9</td><td>Risk Management and Reliability</td></tr>
+                                <tr><td>10</td><td>Software Quality Assurance: ISO standards</td></tr>
+                                <tr><td>11</td><td>Software Quality Assurance: ISO standards vs CMM vs SIX sigma certifications</td></tr>
+                                <tr><td>12</td><td>Software Project Management Basics part-1</td></tr>
+                                <tr><td>13</td><td>Software Project Management Basics part-2</td></tr>
+                                <tr><td>14</td><td>SPMD Document Writing</td></tr>
+                                <tr><td>15</td><td>Project Estimation Techniques part-1</td></tr>
+                                <tr><td>16</td><td>Project Estimation Techniques part-2</td></tr>
+                                <tr><td>17</td><td>Cost Estimation by COCOMO Model</td></tr>
+                                <tr><td>18</td><td>Cost Estimation by Putnam Model</td></tr>
+                                <tr><td>19</td><td>Cost Estimation by Function point-based techniques</td></tr>
+                                <tr><td>20</td><td>Halstead Software Science</td></tr>
+                                <tr><td>21</td><td>Software Project Scheduling: PERT</td></tr>
+                                <tr><td>22</td><td>Software Project Scheduling: CPM and Other Methods</td></tr>
+                                <tr><td>23</td><td>Software Design Method Part-1</td></tr>
+                                <tr><td>24</td><td>Software Design Method Part-2</td></tr>
+                                <tr><td>25</td><td>Software Coding and Implementation</td></tr>
+                                <tr><td>26</td><td>Software Testing Part-1</td></tr>
+                                <tr><td>27</td><td>Software Testing Part-2</td></tr>
+                                <tr><td>28</td><td>Software Testing Part-3</td></tr>
+                                <tr><td>29</td><td>Software Configuration Management</td></tr>
+                                <tr><td>30</td><td>DFD Diagrams Preparations</td></tr>
+                                <tr><td>31</td><td>SRS Writing Examples</td></tr>
+                                <tr><td>32</td><td>Verification and Validation Methods</td></tr>
+                                <tr><td>33</td><td>Software Maintenance</td></tr>
+                                <tr><td>34</td><td>Software Reusability</td></tr>
+                                <tr><td>35</td><td>Client Server Software</td></tr>
+                                <tr><td>36</td><td>Service Oriented Architecture</td></tr>
+                                <tr><td>37</td><td>Progressive Web Apps and Cloud Computing</td></tr>
+                                <tr><td>38</td><td>Low Code and No-code Development</td></tr>
+                                <tr><td>39</td><td>AI and Machine Learning adoption</td></tr>
+                                <tr><td>40</td><td>Emerging Trends in Software Engineering</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="info-card">
-            <h4>Textbooks</h4>
-            <ul><li>Computer Architecture – Morris Mano</li></ul>
-        </div>
-        <div class="info-card">
-            <h4>Reference Books</h4>
-            <ul>
-                <li>Computer Organization and Architecture – William Stallings</li>
-                <li>Computer Architecture – Schaum's Outlines</li>
-            </ul>
-        </div>
-    </div>
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Course Outcomes</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <ul class="outcomes-list">
-                <li><span class="outcome-num">1</span>Understand physical organization of digital computers including registers, data flow, micro-operations, and control functions.</li>
-                <li><span class="outcome-num">2</span>Use various instructions from basic computers to write assembly-language programs for data processing tasks.</li>
-                <li><span class="outcome-num">3</span>Compare performance of digital computers with varying architectural choices.</li>
-                <li><span class="outcome-num">4</span>Comprehend the organization and implementation of computer memories.</li>
-                <li><span class="outcome-num">5</span>Gain knowledge of I/O interfacing methods used by digital computers.</li>
-            </ul>
-        </div>
-    </div>
+        <!-- CSE 224 (DC) Details -->
+        <div class="subject-details" id="cse224">
+            <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Course Information - Data Communication</h4>
+                    <p><strong>Code:</strong> CSE 224<br>
+                    <strong>Type:</strong> Core<br>
+                    <strong>Semester:</strong> IV</p>
+                </div>
+                <div class="info-card">
+                    <h4>Prerequisites</h4>
+                    <div class="prerequisite-tags">
+                        <span class="prerequisite-tag">Basic understanding of computer networks</span>
+                    </div>
+                </div>
+            </div>
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Course Content</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <div class="content-block"><h4>1. Basic Organization & Data Formats</h4><p>Overview of computer organization and design; Fixed Point and Floating-Point data formats.</p></div>
-            <div class="content-block"><h4>2. Central Processor Organization</h4><p>General Register Organization, Stack Organization, Bus organized memory, Bus structure, Register Transfer Languages, Instruction Types, expanding op-codes, Addressing Modes.</p></div>
-            <div class="content-block"><h4>3. Control Unit Organization</h4><p>Hardwired control & microprogrammed control organization; micro-instruction formats; micro-program sequencer; control memory; horizontal and vertical micro-programming.</p></div>
-            <div class="content-block"><h4>4. Arithmetic Processor Design</h4><p>Fixed-point signed addition/subtraction; multiplication algorithms (Booth's); division algorithm; performance evaluation; AMDHAL's Law; pipeline processing and hazards.</p></div>
-            <div class="content-block"><h4>5. Input-Output Organization</h4><p>Asynchronous data transfer; asynchronous communication interface; program-controlled, interrupt-initiated, and DMA transfer modes.</p></div>
-            <div class="content-block"><h4>6. Memory Organization</h4><p>Memory categorization; horizontal and vertical expansion; cache memory mapping schemes; associative memory hardware organization.</p></div>
-        </div>
-    </div>
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('content-cse224')">
+                    <span>Course Content Overview</span>
+                    <span class="arrow" id="arrow-content-cse224">▼</span>
+                </div>
+                <div class="collapsible-content" id="content-cse224">
+                    <div class="collapsible-inner">
+                        <p>This course provides a comprehensive foundation in data communications. Topics range from layered communication architecture to advanced physical layer phenomena like signal sampling, channel bandwidth, transmission impairments (attenuation, distortion, noise), and the channel capacity of noisy/noise-free channels.</p>
+                        <p>It also extensively covers transmission media (guided and unguided), line coding schemes, modulation techniques, and multiplexing schemas. Beyond the physical properties, the course explores modern communication needs, diving into error detection/correction, satellite communications, multimedia network performance, audio/video compression, and basics of network cryptography.</p>
+                    </div>
+                </div>
+            </div>
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Lecture Plan (38 Lectures)</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <table class="lecture-table">
-                <thead><tr><th>S.No.</th><th>Topic</th><th>Lectures</th></tr></thead>
-                <tbody>
-                    <tr><td>1</td><td>Overview of basic computer organization and design; Fixed Point Data & Floating-Point Data</td><td>03</td></tr>
-                    <tr><td>2</td><td>Central processor organizations: basic building blocks</td><td>01</td></tr>
-                    <tr><td>3</td><td>General Register Organization, Stack Organization, Bus organized computer memory, Bus structure</td><td>03</td></tr>
-                    <tr><td>4</td><td>Register transfer languages, Instruction Types, expanding op-codes, Addressing Modes</td><td>03</td></tr>
-                    <tr><td>5</td><td>Microinstruction formats</td><td>01</td></tr>
-                    <tr><td>6</td><td>Control unit organization: hardwired control & microprogrammed control</td><td>02</td></tr>
-                    <tr><td>7</td><td>Micro-instruction formats, Micro-program sequencer, Control memory</td><td>02</td></tr>
-                    <tr><td>8</td><td>Horizontal and Vertical micro-programming</td><td>01</td></tr>
-                    <tr><td>9</td><td>Arithmetic processor design: Fixed point signed addition and subtraction algorithm</td><td>02</td></tr>
-                    <tr><td>10</td><td>Multiplication algorithms (Booth's), Array Multiplier, Division algorithm</td><td>02</td></tr>
-                    <tr><td>11</td><td>Performance evaluation of processors, AMDHAL's Law</td><td>02</td></tr>
-                    <tr><td>12</td><td>Introduction to pipeline processing, pipeline hazards</td><td>05</td></tr>
-                    <tr><td>13</td><td>I/O organization: Asynchronous Data Transfer, Asynchronous Communication Interface</td><td>02</td></tr>
-                    <tr><td>14</td><td>Modes of Data Transfer: Program Controlled, Interrupt-Initiated, DMA</td><td>03</td></tr>
-                    <tr><td>15</td><td>Memory Organization: categorization, horizontal/vertical expansion, access time</td><td>03</td></tr>
-                    <tr><td>16</td><td>Hardware Organization, Cache Memory: Mapping Schemes</td><td>03</td></tr>
-                    <tr><td colspan="2" style="color:var(--accent); font-weight:700; font-family:'Syne',sans-serif;">TOTAL</td><td style="color:var(--accent); font-weight:700;">38</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('books-cse224')">
+                    <span>Textbooks & References</span>
+                    <span class="arrow" id="arrow-books-cse224">▼</span>
+                </div>
+                <div class="collapsible-content" id="books-cse224">
+                    <div class="collapsible-inner">
+                        <h4>Textbooks & References</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Data Communication and Networking</div>
+                                <div class="book-author">B. A. Forouzan</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Data & Computer Communication</div>
+                                <div class="book-author">William Stallings</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Digital Communications</div>
+                                <div class="book-author">Simon Haykin</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Principles of Communication Systems</div>
+                                <div class="book-author">Herbert Taub & D. L. Schilling</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-<!-- ══════════════════════════════════════════════
-     HUM
-══════════════════════════════════════════════ -->
-<div class="subject-details" id="hum">
-    <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
-
-    <div class="detail-header">
-        <div class="detail-icon icon-orange">🚀</div>
-        <div>
-            <h2>Fundamentals of Entrepreneurship</h2>
-            <div class="meta">
-                <span class="meta-tag">HUM 251</span>
-                <span class="meta-tag">Core</span>
-                <span class="meta-tag">B.Tech · Semester III/IV · Year II</span>
-                <span class="meta-tag">Dept. of Humanities & Social Sciences</span>
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('lectures-cse224')">
+                    <span>Lecture Plan (40 Lectures)</span>
+                    <span class="arrow" id="arrow-lectures-cse224">▼</span>
+                </div>
+                <div class="collapsible-content" id="lectures-cse224">
+                    <div class="collapsible-inner">
+                        <table class="lecture-table">
+                            <thead>
+                                <tr><th>Lecture</th><th>Topic</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Introduction to data communication</td></tr>
+                                <tr><td>2</td><td>Layered Architecture for communication</td></tr>
+                                <tr><td>3</td><td>Introduction to switching and routing</td></tr>
+                                <tr><td>4</td><td>Internet and Internetworking</td></tr>
+                                <tr><td>5</td><td>Analog/Digital Data and Signals</td></tr>
+                                <tr><td>6</td><td>Properties of Signals</td></tr>
+                                <tr><td>7</td><td>Signal sampling and Data rate</td></tr>
+                                <tr><td>8</td><td>Channel Bandwidth</td></tr>
+                                <tr><td>9</td><td>Channel capacity of Noisy and Noise free channel</td></tr>
+                                <tr><td>10</td><td>Transmission Impairments</td></tr>
+                                <tr><td>11</td><td>Attenuation, Distortion, Delay Distortion, Type of Noise</td></tr>
+                                <tr><td>12</td><td>Channel types and characteristics</td></tr>
+                                <tr><td>13</td><td>Mode of Communication</td></tr>
+                                <tr><td>14</td><td>Serial & parallel transmission</td></tr>
+                                <tr><td>15</td><td>Introduction guided transmission media</td></tr>
+                                <tr><td>16</td><td>Type and characteristics of guided transmission media</td></tr>
+                                <tr><td>17</td><td>Introduction unguided transmission media</td></tr>
+                                <tr><td>18</td><td>Type and characteristics of unguided transmission media</td></tr>
+                                <tr><td>19</td><td>Digital and Analog Transmission-I</td></tr>
+                                <tr><td>20</td><td>Digital and Analog Transmission-II</td></tr>
+                                <tr><td>21</td><td>Line coding schemes</td></tr>
+                                <tr><td>22</td><td>Comparison of different line coding schemes</td></tr>
+                                <tr><td>23</td><td>Introduction to modulation techniques</td></tr>
+                                <tr><td>24</td><td>Comparison of different modulation schemes</td></tr>
+                                <tr><td>25</td><td>Introduction to Multiplexing</td></tr>
+                                <tr><td>26</td><td>Comparison of different multiplexing schemes</td></tr>
+                                <tr><td>27</td><td>Multiplexing Applications</td></tr>
+                                <tr><td>28</td><td>Interfacing to media</td></tr>
+                                <tr><td>29</td><td>Error Detection and Correction schemes</td></tr>
+                                <tr><td>30</td><td>Synchronous and Asynchronous transmission</td></tr>
+                                <tr><td>31</td><td>Satellite Communications</td></tr>
+                                <tr><td>32</td><td>Scheme for satellite communications and their advantages</td></tr>
+                                <tr><td>33</td><td>Multimedia Networks</td></tr>
+                                <tr><td>34</td><td>Performance parameters of multimedia networks</td></tr>
+                                <tr><td>35</td><td>Audio and Video Compression</td></tr>
+                                <tr><td>36</td><td>MP3 and JPEG compression schemes</td></tr>
+                                <tr><td>37</td><td>Multimedia Services</td></tr>
+                                <tr><td>38</td><td>Streaming, stored and live services</td></tr>
+                                <tr><td>39</td><td>Secured Communications</td></tr>
+                                <tr><td>40</td><td>Basics of cryptography</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="info-grid">
-        <div class="info-card">
-            <h4>Prerequisites</h4>
-            <div class="tag-list">
-                <span class="prereq-tag">Fundamental understanding of entrepreneurship</span>
-                <span class="prereq-tag">Understanding of industrial laws & regulations</span>
+        <!-- HUM 251 (FoE) Details -->
+        <div class="subject-details" id="hum251">
+            <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Course Information - Fundamentals of Entrepreneurship</h4>
+                    <p><strong>Code:</strong> HUM 251<br>
+                    <strong>Type:</strong> Core<br>
+                    <strong>Semester:</strong> III/IV</p>
+                </div>
+                <div class="info-card">
+                    <h4>Prerequisites</h4>
+                    <div class="prerequisite-tags">
+                        <span class="prerequisite-tag">Basic understanding of organizational functioning</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('outcomes-hum251')">
+                    <span>Course Outcomes</span>
+                    <span class="arrow" id="arrow-outcomes-hum251">▼</span>
+                </div>
+                <div class="collapsible-content" id="outcomes-hum251">
+                    <div class="collapsible-inner">
+                        <ol class="outcomes-list">
+                            <li>Course will inculcate basic knowledge of Industrial Laws & basics of management principles for engineering students to handle all the matters related to industrial day to day functions and technicalities.</li>
+                            <li>Engineering students will be in position to take appropriate decision to understand the industrial Laws and application of administrative principles for smooth functioning of Industry and a fresh idea to setup new business.</li>
+                            <li>Boost up the capacity of engineers to develop Business ideas to become successful entrepreneurs to setup new operational business units to address the need of society at national and local level.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('content-hum251')">
+                    <span>Course Content</span>
+                    <span class="arrow" id="arrow-content-hum251">▼</span>
+                </div>
+                <div class="collapsible-content" id="content-hum251">
+                    <div class="collapsible-inner">
+                        <h4>1. Introduction to Entrepreneurship</h4>
+                        <p>Basics of Entrepreneurship: Meaning, Nature, Scope, importance and present scenario, Evolution of Entrepreneurship, Factors influencing Entrepreneurship. Characteristics of an Entrepreneur, Types of Entrepreneur. New Generation: social entrepreneurship, tourism, women entrepreneurship. Barriers to Entrepreneurship.</p>
+                        
+                        <h4>2. Rural Entrepreneurship</h4>
+                        <p>Rural entrepreneurship in India, Meaning, Concept, Needs, Problems, Rural Industrialization, Entrepreneurial development in backward areas, Problems and Risk in entrepreneurship.</p>
+                        
+                        <h4>3. Industrial Laws</h4>
+                        <p>Factory Act 1948, Minimum wages Act, Provident Fund Act, Dispute Act, Contract Labor Act, Compensation Act, Inter State Migrant worker Act, Sexual Harassment Act, SEZ, National Small Industries, Quality Standard (ISO), SIDBI, New Pension Act 2004.</p>
+                        
+                        <h4>4. Entrepreneurial Motivation</h4>
+                        <p>Meaning and Relevance of Motivation, Maslow's Theory, Herzberg's Theory, Douglas McGregor. Organizational Development Theories. Fredric Winslow Taylor, Marry Parker Follett, Elton Mayo, Max Weber, Henry Fayol, Power, Accountability, Responsibility, Control, Transparency and Conflict Resolutions.</p>
+                        
+                        <h4>5. Government Initiatives</h4>
+                        <p>ATAL Innovation Mission, SAMRIDH Scheme, Multiplier Grant Scheme (MGS), Start-up India Seed Fund, Single Point Registration Scheme, Stand-up India Scheme, Ministry of Skill Development and Entrepreneurship, Case studies in software Technology Parks.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleSection('books-hum251')">
+                    <span>Textbooks & References</span>
+                    <span class="arrow" id="arrow-books-hum251">▼</span>
+                </div>
+                <div class="collapsible-content" id="books-hum251">
+                    <div class="collapsible-inner">
+                        <h4>Textbooks</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Administrative Thinkers</div>
+                                <div class="book-author">D. Ravindra Prasad, V.S. Prasad, P. Satyanarayana, Y. Pardhasaradhi</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Teaching Entrepreneurship</div>
+                                <div class="book-author">Patricia Haidi & Brush</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Public Personnel Management</div>
+                                <div class="book-author">Norma M. Riccucci</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Labour & Industrial Laws</div>
+                                <div class="book-author">Padhi</div>
+                            </li>
+                        </ul>
+                        
+                        <h4>Reference Books</h4>
+                        <ul class="books-list">
+                            <li>
+                                <div class="book-title">Personnel Management</div>
+                                <div class="book-author">Monappa & Saiyadain</div>
+                            </li>
+                            <li>
+                                <div class="book-title">Entrepreneurship: Theory, Process & Practice</div>
+                                <div class="book-author">Howard & Donald</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="info-card">
-            <h4>Textbooks</h4>
-            <ul>
-                <li>Administrative Thinkers – D. Ravindra Prasad et al., Sterling Publishers, 2010</li>
-                <li>Teaching Entrepreneurship – Haidi, Patricia & Brush, Edward Elgar, 2014</li>
-                <li>Public Personnel Management – Norma M. Riccucci, Rutledge, 2017</li>
-                <li>Labour & Industrial Laws – Padhi, PHI Learning, 2017</li>
-            </ul>
-        </div>
-        <div class="info-card">
-            <h4>Reference Books & Journals</h4>
-            <ul>
-                <li>Personnel Management – Monappa & Saiyadain, McGraw Hills, 2001</li>
-                <li>Entrepreneurship: Theory, Process & Practice – Howard & Donald, 2010</li>
-                <li>The Journal of Entrepreneurship – Sage Publication</li>
-                <li>International Entrepreneurship & Management Journal – Springer</li>
-            </ul>
-        </div>
+
     </div>
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Course Outcomes</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <ul class="outcomes-list">
-                <li><span class="outcome-num">1</span>Inculcate basic knowledge of Industrial Laws & management principles to handle industrial day-to-day functions with their dimensions.</li>
-                <li><span class="outcome-num">2</span>Take appropriate decisions to understand industrial laws and administrative principles for smooth functioning of industry and setting up new business.</li>
-                <li><span class="outcome-num">3</span>Develop business ideas to become successful entrepreneurs and set up new operational business units to address societal needs at national and local level.</li>
-            </ul>
-        </div>
-    </div>
+    <script>
+        let currentSubject = null;
 
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Course Content</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <div class="content-block"><h4>1. Basics of Entrepreneurship</h4><p>Meaning, nature, scope, importance, evolution, factors influencing entrepreneurship (social, psychological, economical, environmental). Types of entrepreneurs, new generation entrepreneurship (social, tourism, women). Barriers to entrepreneurship.</p></div>
-            <div class="content-block"><h4>2. Rural Entrepreneurship</h4><p>Rural entrepreneurship in India – introduction, meaning, concept, needs, problems, rural industrialization, entrepreneurial development in backward areas, problems and risks.</p></div>
-            <div class="content-block"><h4>3. Industrial Laws</h4><p>Factory Act 1948, Minimum Wages Act 1948, Provident Fund Act 1952, Dispute Act 1947, Contract Labor Act 1970, Compensation Act 1919, Sexual Harassment Act, SEZ, MSME, ISO standards, ISDBI, New Pension Act 2004.</p></div>
-            <div class="content-block"><h4>4. Entrepreneurial Motivation</h4><p>Maslow's Theory, Herzberg's Theory, Douglas McGregor. Organizational Development Theories (Taylor, Follett, Mayo, Weber, Fayol). Power, Accountability, Responsibility, Control, Transparency and Conflict Resolutions.</p></div>
-            <div class="content-block"><h4>5. Government Initiatives</h4><p>ATAL Innovation Mission, SAMRIDH Scheme, Multiplier Grant Scheme (MGS), Start-up India Seed Fund, Single Point Registration Scheme, Stand-up India Scheme, Ministry of Skill Development, Software Technology Parks.</p></div>
-        </div>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════════
-     SOFTWARE ENGINEERING
-══════════════════════════════════════════════ -->
-<div class="subject-details" id="se">
-    <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
-
-    <div class="detail-header">
-        <div class="detail-icon icon-green">⚙️</div>
-        <div>
-            <h2>Software Engineering</h2>
-            <div class="meta">
-                <span class="meta-tag">CSE 24221</span>
-                <span class="meta-tag">Core</span>
-                <span class="meta-tag">B.Tech · Semester IV · Year II</span>
-                <span class="meta-tag">Session: Jan–Jun 2026</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="info-grid">
-        <div class="info-card">
-            <h4>Subject Coordinator</h4>
-            <p>Dr. Vikram Garg</p>
-        </div>
-        <div class="info-card">
-            <h4>Textbooks</h4>
-            <ul>
-                <li>Fundamentals of Software Engineering – Rajib Mall, PHI Learning</li>
-                <li>Software Engineering: A Practitioner's Approach – Roger S. Pressman, McGraw-Hill</li>
-                <li>An Integrated Approach to Software Engineering – Pankaj Jalote, Narosa</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Lecture Plan (40 Lectures)</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <table class="lecture-table">
-                <thead><tr><th>#</th><th>Topic</th></tr></thead>
-                <tbody>
-                    <tr><td>1</td><td>Introduction and importance of Software Engineering</td></tr>
-                    <tr><td>2</td><td>Types of Softwares and Introduction to SDLC</td></tr>
-                    <tr><td>3</td><td>Phases of SDLC</td></tr>
-                    <tr><td>4</td><td>Process Models: Waterfall model and Prototyping model</td></tr>
-                    <tr><td>5</td><td>RAD and Incremental Process Models</td></tr>
-                    <tr><td>6</td><td>Spiral Model and Win Win Spiral Model</td></tr>
-                    <tr><td>7</td><td>Agile Model, Extreme Programming</td></tr>
-                    <tr><td>8</td><td>CASE tools</td></tr>
-                    <tr><td>9</td><td>Risk Management and Reliability</td></tr>
-                    <tr><td>10</td><td>Software Quality Assurance: ISO standards</td></tr>
-                    <tr><td>11</td><td>SQA: ISO standards vs CMM vs SIX Sigma certifications</td></tr>
-                    <tr><td>12</td><td>Software Project Management Basics Part-1</td></tr>
-                    <tr><td>13</td><td>Software Project Management Basics Part-2</td></tr>
-                    <tr><td>14</td><td>SPMD Document Writing</td></tr>
-                    <tr><td>15</td><td>Project Estimation Techniques Part-1</td></tr>
-                    <tr><td>16</td><td>Project Estimation Techniques Part-2</td></tr>
-                    <tr><td>17</td><td>Cost Estimation by COCOMO Model</td></tr>
-                    <tr><td>18</td><td>Cost Estimation by Putnam Model</td></tr>
-                    <tr><td>19</td><td>Cost Estimation by Function Point-based techniques</td></tr>
-                    <tr><td>20</td><td>Halstead Software Science</td></tr>
-                    <tr><td>21</td><td>Software Project Scheduling: PERT</td></tr>
-                    <tr><td>22</td><td>Software Project Scheduling: CPM and Other Methods</td></tr>
-                    <tr><td>23</td><td>Software Design Method Part-1</td></tr>
-                    <tr><td>24</td><td>Software Design Method Part-2</td></tr>
-                    <tr><td>25</td><td>Software Coding and Implementation</td></tr>
-                    <tr><td>26</td><td>Software Testing Part-1</td></tr>
-                    <tr><td>27</td><td>Software Testing Part-2</td></tr>
-                    <tr><td>28</td><td>Software Testing Part-3</td></tr>
-                    <tr><td>29</td><td>Software Configuration Management</td></tr>
-                    <tr><td>30</td><td>DFD Diagrams Preparations</td></tr>
-                    <tr><td>31</td><td>SRS Writing Examples</td></tr>
-                    <tr><td>32</td><td>Verification and Validation Methods</td></tr>
-                    <tr><td>33</td><td>Software Maintenance</td></tr>
-                    <tr><td>34</td><td>Software Reusability</td></tr>
-                    <tr><td>35</td><td>Client Server Software</td></tr>
-                    <tr><td>36</td><td>Service Oriented Architecture</td></tr>
-                    <tr><td>37</td><td>Progressive Web Apps and Cloud Computing</td></tr>
-                    <tr><td>38</td><td>Low Code and No-code Development</td></tr>
-                    <tr><td>39</td><td>AI and Machine Learning Adoption</td></tr>
-                    <tr><td>40</td><td>Emerging Trends in Software Engineering</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════════
-     DATA COMMUNICATIONS
-══════════════════════════════════════════════ -->
-<div class="subject-details" id="dc">
-    <button class="back-btn" onclick="goBack()">← Back to Subjects</button>
-
-    <div class="detail-header">
-        <div class="detail-icon icon-teal">📡</div>
-        <div>
-            <h2>Data Communications</h2>
-            <div class="meta">
-                <span class="meta-tag">CSE 224</span>
-                <span class="meta-tag">Core</span>
-                <span class="meta-tag">B.Tech (CSE) · Semester IV</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="info-grid">
-        <div class="info-card">
-            <h4>Subject Coordinators</h4>
-            <ul>
-                <li>Dr. Mitul Kumar Ahirwal</li>
-                <li>Dr. Surendra Singh</li>
-                <li>Dr. Vaibhav Soni</li>
-            </ul>
-        </div>
-        <div class="info-card">
-            <h4>Textbooks</h4>
-            <ul>
-                <li>Data Communication and Networking – B A Forouzan</li>
-                <li>Data & Computer Communication – William Stallings</li>
-                <li>Digital Communications – Simon Haykin</li>
-                <li>Principles of Communication Systems – Taub & Schilling</li>
-            </ul>
-        </div>
-        <div class="info-card">
-            <h4>Online Resources</h4>
-            <ul>
-                <li>Cisco Networking Resources</li>
-                <li>NPTEL: nptel.ac.in/courses/106/105/106105082/</li>
-                <li>examradar.com/communication-networking-summary-1/</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Course Content Overview</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <div class="content-block"><h4>1. Fundamentals</h4><p>Introduction to data communication; layered architecture; switching and routing; Internet and internetworking.</p></div>
-            <div class="content-block"><h4>2. Signals & Channels</h4><p>Analog/digital data and signals; signal properties; sampling and data rate; channel bandwidth; channel capacity (Shannon & Nyquist); transmission impairments (attenuation, distortion, noise).</p></div>
-            <div class="content-block"><h4>3. Transmission Media</h4><p>Channel types; modes of communication; serial & parallel transmission; guided media (types & characteristics); unguided media (types & characteristics).</p></div>
-            <div class="content-block"><h4>4. Digital & Analog Transmission</h4><p>Line coding schemes; modulation techniques comparison; multiplexing (introduction, comparison, applications); interfacing to media.</p></div>
-            <div class="content-block"><h4>5. Error Detection, Synchronization & Satellite</h4><p>Error detection and correction schemes; synchronous and asynchronous transmission; satellite communications and schemes.</p></div>
-            <div class="content-block"><h4>6. Multimedia Networks & Security</h4><p>Multimedia networks; performance parameters; audio and video compression (MP3, JPEG); multimedia services; streaming; secured communications; basics of cryptography.</p></div>
-        </div>
-    </div>
-
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggle(this)">
-            <span>Lecture Plan (40 Lectures)</span><span class="arrow">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <table class="lecture-table">
-                <thead><tr><th>#</th><th>Topic</th></tr></thead>
-                <tbody>
-                    <tr><td>1</td><td>Introduction to data communication</td></tr>
-                    <tr><td>2</td><td>Layered Architecture for communication</td></tr>
-                    <tr><td>3</td><td>Introduction to switching and routing</td></tr>
-                    <tr><td>4</td><td>Internet and Internetworking</td></tr>
-                    <tr><td>5</td><td>Analog/Digital Data and Signals</td></tr>
-                    <tr><td>6</td><td>Properties of Signals</td></tr>
-                    <tr><td>7</td><td>Signal sampling and Data rate</td></tr>
-                    <tr><td>8</td><td>Channel Bandwidth</td></tr>
-                    <tr><td>9</td><td>Channel capacity of Noisy and Noise free channel</td></tr>
-                    <tr><td>10</td><td>Transmission Impairments</td></tr>
-                    <tr><td>11</td><td>Attenuation, Distortion, Delay Distortion, Type of Noise</td></tr>
-                    <tr><td>12</td><td>Channel types and characteristics</td></tr>
-                    <tr><td>13</td><td>Mode of Communication</td></tr>
-                    <tr><td>14</td><td>Serial & parallel transmission</td></tr>
-                    <tr><td>15</td><td>Introduction to guided transmission media</td></tr>
-                    <tr><td>16</td><td>Type and characteristics of guided transmission media</td></tr>
-                    <tr><td>17</td><td>Introduction to unguided transmission media</td></tr>
-                    <tr><td>18</td><td>Type and characteristics of unguided transmission media</td></tr>
-                    <tr><td>19</td><td>Digital and Analog Transmission-I</td></tr>
-                    <tr><td>20</td><td>Digital and Analog Transmission-II</td></tr>
-                    <tr><td>21</td><td>Line coding schemes</td></tr>
-                    <tr><td>22</td><td>Comparison of different line coding schemes</td></tr>
-                    <tr><td>23</td><td>Introduction to modulation techniques</td></tr>
-                    <tr><td>24</td><td>Comparison of different modulation schemes</td></tr>
-                    <tr><td>25</td><td>Introduction to Multiplexing</td></tr>
-                    <tr><td>26</td><td>Comparison of different multiplexing schemes</td></tr>
-                    <tr><td>27</td><td>Multiplexing Applications</td></tr>
-                    <tr><td>28</td><td>Interfacing to media</td></tr>
-                    <tr><td>29</td><td>Error Detection and Correction schemes</td></tr>
-                    <tr><td>30</td><td>Synchronous and Asynchronous transmission</td></tr>
-                    <tr><td>31</td><td>Satellite Communications</td></tr>
-                    <tr><td>32</td><td>Scheme for satellite communications and their advantages</td></tr>
-                    <tr><td>33</td><td>Multimedia Networks</td></tr>
-                    <tr><td>34</td><td>Performance parameters of multimedia networks</td></tr>
-                    <tr><td>35</td><td>Audio and Video Compression</td></tr>
-                    <tr><td>36</td><td>MP3 and JPEG compression schemes</td></tr>
-                    <tr><td>37</td><td>Multimedia Services</td></tr>
-                    <tr><td>38</td><td>Streaming, stored and live services</td></tr>
-                    <tr><td>39</td><td>Secured Communications</td></tr>
-                    <tr><td>40</td><td>Basics of cryptography</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script>
-    let current = null;
-
-    function showSubject(id) {
-        document.getElementById('subjectSelector').style.display = 'none';
-        if (current) document.getElementById(current).classList.remove('active');
-        document.getElementById(id).classList.add('active');
-        current = id;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function goBack() {
-        if (current) {
-            document.getElementById(current).classList.remove('active');
-            // reset all collapsibles in this view
-            document.querySelectorAll('#' + current + ' .collapsible-body').forEach(b => b.classList.remove('open'));
-            document.querySelectorAll('#' + current + ' .arrow').forEach(a => a.classList.remove('open'));
+        function showSubject(subjectId) {
+            // Hide selector
+            document.getElementById('subjectSelector').style.display = 'none';
+            
+            // Hide all subject details
+            const allDetails = document.querySelectorAll('.subject-details');
+            allDetails.forEach(detail => detail.classList.remove('active'));
+            
+            // Show selected subject
+            document.getElementById(subjectId).classList.add('active');
+            currentSubject = subjectId;
+            
+            // Update card states
+            const allCards = document.querySelectorAll('.subject-card');
+            allCards.forEach(card => card.classList.remove('active'));
         }
-        document.getElementById('subjectSelector').style.display = 'block';
-        current = null;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 
-    function toggle(header) {
-        const body = header.nextElementSibling;
-        const arrow = header.querySelector('.arrow');
-        const isOpen = body.classList.contains('open');
-        body.classList.toggle('open', !isOpen);
-        arrow.classList.toggle('open', !isOpen);
-    }
-</script>
+        function goBack() {
+            // Show selector
+            document.getElementById('subjectSelector').style.display = 'block';
+            
+            // Hide current subject
+            if (currentSubject) {
+                document.getElementById(currentSubject).classList.remove('active');
+            }
+            
+            // Reset all collapsible sections
+            const allContent = document.querySelectorAll('.collapsible-content');
+            allContent.forEach(content => {
+                content.classList.remove('active');
+                content.style.maxHeight = '0';
+            });
+            
+            const allArrows = document.querySelectorAll('.arrow');
+            allArrows.forEach(arrow => arrow.classList.remove('active'));
+            
+            currentSubject = null;
+        }
+
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId);
+            const arrow = document.getElementById('arrow-' + sectionId);
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                arrow.classList.remove('active');
+                content.style.maxHeight = '0';
+            } else {
+                content.classList.add('active');
+                arrow.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        }
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            });
+        });
+    </script>
 </body>
 </html>
