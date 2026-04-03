@@ -220,7 +220,7 @@ const UploadMaterial = () => {
             <option value="Notes">Notes</option>
             <option value="Books">Books</option>
             <option value="PYQs">PYQs</option>
-            <option value="Syllabus">Syllabus</option>
+            <option value="Assignments">Assignments</option>
           </select>
         </div>
 
