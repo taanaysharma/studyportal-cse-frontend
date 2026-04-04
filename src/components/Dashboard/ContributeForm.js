@@ -86,10 +86,16 @@ const ContributeForm = () => {
     return '#BA7517';
   };
 
+  const statusBg = (status) => {
+    if (status === 'approved') return 'var(--success-color)';
+    if (status === 'rejected') return 'var(--error-color)';
+    return 'var(--warning-color)';
+  };
+
   return (
     <div style={{ maxWidth: 700, margin: '0 auto', padding: '1rem' }}>
-      <h3 style={{ marginBottom: '1rem' }}>Contribute Study Material</h3>
-      <p style={{ color: '#888', marginBottom: '1.5rem', fontSize: 14 }}>
+      <h3 style={{ marginBottom: '1rem', color: 'var(--text-color)' }}>Contribute Study Material</h3>
+      <p style={{ color: 'var(--secondary-color)', marginBottom: '1.5rem', fontSize: 14 }}>
         Upload a file (max 10MB). It will be reviewed by the admin before being published.
       </p>
 
@@ -106,7 +112,9 @@ const ContributeForm = () => {
 
         <select name="semester" value={form.semester} onChange={handleChange} required style={inputStyle}>
           <option value="">Select Semester</option>
-          {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>Semester {s}</option>)}
+          {[1,2,3,4,5,6,7,8].map(s => (
+            <option key={s} value={s}>Semester {s}</option>
+          ))}
         </select>
 
         <select name="subject" value={form.subject} onChange={handleChange} required style={inputStyle}>
@@ -119,17 +127,30 @@ const ContributeForm = () => {
           {categories.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
 
-        <div>
-          <input type="file" accept=".pdf,image/*" onChange={handleFileChange} required />
-          <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>PDF or Image, max 10MB</p>
+        <div style={{
+          padding: '12px',
+          borderRadius: 8,
+          border: '0.5px solid var(--input-border)',
+          background: 'var(--input-background)'
+        }}>
+          <input
+            type="file"
+            accept=".pdf,image/*"
+            onChange={handleFileChange}
+            required
+            style={{ color: 'var(--text-color)' }}
+          />
+          <p style={{ fontSize: 12, color: 'var(--secondary-color)', marginTop: 4, marginBottom: 0 }}>
+            PDF or Image, max 10MB
+          </p>
         </div>
 
         {message && (
           <div style={{
             padding: '10px 14px',
             borderRadius: 8,
-            background: message.type === 'error' ? '#FCEBEB' : '#E1F5EE',
-            color: message.type === 'error' ? '#A32D2D' : '#085041',
+            background: message.type === 'error' ? 'var(--error-color)' : 'var(--success-color)',
+            color: message.type === 'error' ? 'var(--error-text)' : 'var(--success-text)',
             fontSize: 13
           }}>
             {message.text}
@@ -143,12 +164,12 @@ const ContributeForm = () => {
 
       {myContributions.length > 0 && (
         <div style={{ marginTop: '2rem' }}>
-          <h4 style={{ marginBottom: '0.75rem' }}>My Contributions</h4>
+          <h4 style={{ marginBottom: '0.75rem', color: 'var(--text-color)' }}>My Contributions</h4>
           <div style={{ display: 'grid', gap: 10 }}>
             {myContributions.map(c => (
               <div key={c._id} style={{
-                background: 'var(--color-background-primary, #fff)',
-                border: '0.5px solid #ddd',
+                background: 'var(--card-background)',
+                border: '0.5px solid var(--border-color)',
                 borderRadius: 10,
                 padding: '12px 16px',
                 display: 'flex',
@@ -156,12 +177,14 @@ const ContributeForm = () => {
                 alignItems: 'center'
               }}>
                 <div>
-                  <p style={{ fontWeight: 500, margin: 0 }}>{c.title}</p>
-                  <p style={{ fontSize: 12, color: '#888', margin: 0 }}>
+                  <p style={{ fontWeight: 500, margin: 0, color: 'var(--text-color)' }}>{c.title}</p>
+                  <p style={{ fontSize: 12, color: 'var(--secondary-color)', margin: 0 }}>
                     {c.subject?.name} · {c.category} · Sem {c.semester}
                   </p>
                   {c.adminNote && (
-                    <p style={{ fontSize: 12, color: '#888', margin: '4px 0 0' }}>Note: {c.adminNote}</p>
+                    <p style={{ fontSize: 12, color: 'var(--secondary-color)', margin: '4px 0 0' }}>
+                      Note: {c.adminNote}
+                    </p>
                   )}
                 </div>
                 <span style={{
@@ -169,8 +192,9 @@ const ContributeForm = () => {
                   fontWeight: 500,
                   padding: '3px 10px',
                   borderRadius: 20,
-                  background: statusColor(c.status) + '22',
-                  color: statusColor(c.status)
+                  background: statusBg(c.status),
+                  color: statusColor(c.status),
+                  whiteSpace: 'nowrap'
                 }}>
                   {c.status}
                 </span>
@@ -187,17 +211,20 @@ const inputStyle = {
   width: '100%',
   padding: '10px 12px',
   borderRadius: 8,
-  border: '0.5px solid #ccc',
+  border: '0.5px solid var(--input-border)',
   fontSize: 14,
-  background: 'transparent',
-  color: 'inherit'
+  background: 'var(--input-background)',
+  color: 'var(--text-color)',
+  outline: 'none',
+  boxSizing: 'border-box'
 };
 
 const btnStyle = {
   padding: '10px 20px',
   borderRadius: 8,
-  border: '0.5px solid #ccc',
-  background: 'transparent',
+  border: 'none',
+  background: '#1D9E75',
+  color: '#fff',
   fontSize: 14,
   cursor: 'pointer',
   fontWeight: 500
