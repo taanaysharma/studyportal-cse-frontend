@@ -38,7 +38,7 @@ const Sidebar = ({
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
-        <center><h3>SPARK ECE</h3></center>
+        <center><h3>SPARK CSE</h3></center>
         <button className="close-btn" onClick={toggleSidebar}>&times;</button>
       </div>
       <nav className="sidebar-nav">
