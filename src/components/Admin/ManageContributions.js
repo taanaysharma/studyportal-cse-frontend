@@ -42,12 +42,17 @@ const ManageContributions = () => {
     }
   };
 
-  const statusColor = (s) => s === 'approved' ? '#1D9E75' : s === 'rejected' ? '#E24B4A' : '#BA7517';
+  const statusColor = (s) =>
+    s === 'approved' ? '#1D9E75' : s === 'rejected' ? '#E24B4A' : '#BA7517';
+
+  const statusBg = (s) =>
+    s === 'approved' ? 'var(--success-color)' : s === 'rejected' ? 'var(--error-color)' : 'var(--warning-color)';
 
   return (
     <div>
-      <h3 style={{ marginBottom: '1rem' }}>Manage Contributions</h3>
+      <h3 style={{ marginBottom: '1rem', color: 'var(--text-color)' }}>Manage Contributions</h3>
 
+      {/* Filter tabs */}
       <div style={{ display: 'flex', gap: 8, marginBottom: '1rem' }}>
         {['pending', 'approved', 'rejected'].map(s => (
           <button
@@ -56,9 +61,9 @@ const ManageContributions = () => {
             style={{
               padding: '6px 16px',
               borderRadius: 20,
-              border: '0.5px solid #ccc',
-              background: filter === s ? '#1D9E75' : 'transparent',
-              color: filter === s ? '#fff' : 'inherit',
+              border: '0.5px solid var(--border-color)',
+              background: filter === s ? '#1D9E75' : 'var(--input-background)',
+              color: filter === s ? '#fff' : 'var(--text-color)',
               cursor: 'pointer',
               fontSize: 13,
               textTransform: 'capitalize'
@@ -72,8 +77,8 @@ const ManageContributions = () => {
       {message && (
         <div style={{
           padding: '10px 14px', borderRadius: 8, marginBottom: '1rem',
-          background: message.type === 'error' ? '#FCEBEB' : '#E1F5EE',
-          color: message.type === 'error' ? '#A32D2D' : '#085041',
+          background: message.type === 'error' ? 'var(--error-color)' : 'var(--success-color)',
+          color: message.type === 'error' ? 'var(--error-text)' : 'var(--success-text)',
           fontSize: 13
         }}>
           {message.text}
@@ -81,40 +86,40 @@ const ManageContributions = () => {
       )}
 
       {loading ? (
-        <p>Loading...</p>
+        <p style={{ color: 'var(--secondary-color)' }}>Loading...</p>
       ) : contributions.length === 0 ? (
-        <p style={{ color: '#888', fontSize: 14 }}>No {filter} contributions.</p>
+        <p style={{ color: 'var(--secondary-color)', fontSize: 14 }}>No {filter} contributions.</p>
       ) : (
         <div style={{ display: 'grid', gap: 12 }}>
           {contributions.map(c => (
             <div key={c._id} style={{
-              border: '0.5px solid #ddd',
+              border: '0.5px solid var(--border-color)',
               borderRadius: 12,
               padding: '1rem 1.25rem',
-              background: 'var(--color-background-primary, #fff)'
+              background: 'var(--card-background)'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
                 <div>
-                  <p style={{ fontWeight: 500, margin: 0 }}>{c.title}</p>
-                  <p style={{ fontSize: 12, color: '#888', margin: '3px 0 0' }}>
+                  <p style={{ fontWeight: 500, margin: 0, color: 'var(--text-color)' }}>{c.title}</p>
+                  <p style={{ fontSize: 12, color: 'var(--secondary-color)', margin: '3px 0 0' }}>
                     {c.subject?.name} · {c.category} · Sem {c.semester} · {c.fileType}
                   </p>
-                  <p style={{ fontSize: 12, color: '#888', margin: '3px 0 0' }}>
+                  <p style={{ fontSize: 12, color: 'var(--secondary-color)', margin: '3px 0 0' }}>
                     By: <strong>{c.submittedBy?.name}</strong> ({c.submittedBy?.scholarNumber})
                   </p>
                 </div>
-                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                   <a
                     href={c.fileUrl}
                     target="_blank"
                     rel="noreferrer"
-                    style={{ fontSize: 12, color: '#185FA5', textDecoration: 'underline' }}
+                    style={{ fontSize: 12, color: 'var(--primary-color)', textDecoration: 'underline' }}
                   >
                     Preview File
                   </a>
                   <span style={{
                     fontSize: 11, fontWeight: 500, padding: '2px 8px', borderRadius: 20,
-                    background: statusColor(c.status) + '22',
+                    background: statusBg(c.status),
                     color: statusColor(c.status)
                   }}>
                     {c.status}
@@ -131,18 +136,28 @@ const ManageContributions = () => {
                     onChange={(e) => setActionNote(prev => ({ ...prev, [c._id]: e.target.value }))}
                     style={{
                       flex: 1, minWidth: 180, padding: '6px 10px', borderRadius: 6,
-                      border: '0.5px solid #ccc', fontSize: 13, background: 'transparent', color: 'inherit'
+                      border: '0.5px solid var(--input-border)',
+                      fontSize: 13,
+                      background: 'var(--input-background)',
+                      color: 'var(--text-color)',
+                      outline: 'none'
                     }}
                   />
                   <button
                     onClick={() => handleAction(c._id, 'approve')}
-                    style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: '#1D9E75', color: '#fff', cursor: 'pointer', fontSize: 13 }}
+                    style={{
+                      padding: '6px 14px', borderRadius: 6, border: 'none',
+                      background: '#1D9E75', color: '#fff', cursor: 'pointer', fontSize: 13
+                    }}
                   >
                     Approve
                   </button>
                   <button
                     onClick={() => handleAction(c._id, 'reject')}
-                    style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: '#E24B4A', color: '#fff', cursor: 'pointer', fontSize: 13 }}
+                    style={{
+                      padding: '6px 14px', borderRadius: 6, border: 'none',
+                      background: '#E24B4A', color: '#fff', cursor: 'pointer', fontSize: 13
+                    }}
                   >
                     Reject
                   </button>
