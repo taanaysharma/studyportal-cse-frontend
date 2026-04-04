@@ -1,4 +1,3 @@
-// frontend/src/pages/DashboardPage.js
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -9,9 +8,10 @@ import FileList from '../components/Dashboard/FileList';
 import Announcements from '../components/Dashboard/Announcements';
 import FeedbackForm from '../components/Common/FeedbackForm';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
-// HtmlViewer is no longer rendered directly here, but in its own routes
+import ContributeForm from '../components/Dashboard/ContributeForm';
+import SupportChat from '../components/Dashboard/SupportChat';
 import { AuthContext } from '../context/AuthContext';
-import './DashboardPage.scss'; // Page-specific styles
+import './DashboardPage.scss';
 
 const DashboardPage = () => {
   const { user, API_URL, token } = useContext(AuthContext);
@@ -24,14 +24,13 @@ const DashboardPage = () => {
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentView, setCurrentView] = useState('announcements'); // Default to showing announcements
+  const [currentView, setCurrentView] = useState('announcements');
 
   const resetStudyMaterialView = useCallback(() => {
     setSelectedSubject(null);
     setSelectedCategory(null);
   }, []);
 
-  // Effect to fetch initial dashboard data (semester and subjects)
   useEffect(() => {
     const fetchDashboardData = async () => {
       setLoading(true);
@@ -64,7 +63,6 @@ const DashboardPage = () => {
     }
   }, [user, API_URL, token]);
 
-  // Effect to restore previous view from navigation state
   useEffect(() => {
     if (location.state && location.state.previousView) {
       setCurrentView(location.state.previousView);
@@ -76,7 +74,6 @@ const DashboardPage = () => {
     }
   }, [location.state, navigate, location.pathname]);
 
-  // Fetch materials for selected subject and category
   useEffect(() => {
     const fetchMaterials = async () => {
       if (selectedSubject && selectedCategory) {
@@ -85,9 +82,7 @@ const DashboardPage = () => {
         try {
           const res = await axios.get(
             `${API_URL}/materials?subjectId=${selectedSubject._id}&category=${selectedCategory}`,
-            {
-              headers: { Authorization: `Bearer ${token}` }
-            }
+            { headers: { Authorization: `Bearer ${token}` } }
           );
           if (res.data.success) {
             setMaterials(res.data.data);
@@ -107,7 +102,6 @@ const DashboardPage = () => {
       fetchMaterials();
     }
   }, [selectedSubject, selectedCategory, API_URL, token, currentView]);
-
 
   const handleSubjectClick = (subject) => {
     setSelectedSubject(subject);
@@ -130,9 +124,7 @@ const DashboardPage = () => {
     });
   };
 
-  const handleBackToFolders = () => {
-    setSelectedCategory(null);
-  };
+  const handleBackToFolders = () => setSelectedCategory(null);
 
   const handleShowStudyMaterials = useCallback(() => {
     setCurrentView('materials');
@@ -149,7 +141,16 @@ const DashboardPage = () => {
     resetStudyMaterialView();
   }, [resetStudyMaterialView]);
 
-  // Removed handleShowSyllabusHtml and handleShowGuidelinesHtml from here
+  // NEW handlers
+  const handleShowContribute = useCallback(() => {
+    setCurrentView('contribute');
+    resetStudyMaterialView();
+  }, [resetStudyMaterialView]);
+
+  const handleShowSupport = useCallback(() => {
+    setCurrentView('support');
+    resetStudyMaterialView();
+  }, [resetStudyMaterialView]);
 
   if (loading) {
     return <DashboardLayout><LoadingSpinner /></DashboardLayout>;
@@ -164,18 +165,17 @@ const DashboardPage = () => {
       handleShowStudyMaterials={handleShowStudyMaterials}
       handleShowAnnouncements={handleShowAnnouncements}
       handleShowFeedback={handleShowFeedback}
-    // Removed handleShowSyllabusHtml and handleShowGuidelinesHtml from props
+      handleShowContribute={handleShowContribute}
+      handleShowSupport={handleShowSupport}
     >
       <div className="dashboard-page">
         {currentView === 'announcements' && <Announcements />}
         {currentView === 'feedback' && <FeedbackForm />}
-        {/* Removed HtmlViewer rendering from here */}
+        {currentView === 'contribute' && <ContributeForm />}
+        {currentView === 'support' && <SupportChat />}
 
         {currentView === 'materials' && (
           <>
-            {/* Removed static-content-buttons from here */}
-
-            {/* Navigation Header with Back Button */}
             {selectedSubject && (
               <div className="navigation-header">
                 {selectedCategory ? (
