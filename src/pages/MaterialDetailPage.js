@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FileViewer from '../components/Dashboard/FileViewer';
-import LoadingSpinner from '../components/Common/LoadingSpinner';
+import { MaterialDetailSkeleton } from '../components/Common/Skeleton';
 import { AuthContext } from '../context/AuthContext';
 import './MaterialDetailPage.scss';
 
@@ -35,9 +35,7 @@ const MaterialDetailPage = () => {
       }
     };
 
-    if (id && token) {
-      fetchMaterial();
-    }
+    if (id && token) fetchMaterial();
   }, [id, API_URL, token]);
 
   const handleCloseViewer = () => {
@@ -54,16 +52,27 @@ const MaterialDetailPage = () => {
     }
   };
 
+  // Show skeleton that matches the file type we're about to display.
+  // We don't know the type yet while loading, so default to 'pdf'
+  // (which gives the most realistic preview for most materials).
   if (loading) {
-    return <div className="material-detail-page-loading"><LoadingSpinner /></div>;
+    return <MaterialDetailSkeleton type="pdf" />;
   }
 
   if (error) {
-    return <div className="material-detail-page-error message-box error">{error}</div>;
+    return (
+      <div className="material-detail-page">
+        <div className="material-detail-page-error message-box error">{error}</div>
+      </div>
+    );
   }
 
   if (!material) {
-    return <div className="material-detail-page-info message-box info">Material not found.</div>;
+    return (
+      <div className="material-detail-page">
+        <div className="material-detail-page-info message-box info">Material not found.</div>
+      </div>
+    );
   }
 
   return (
