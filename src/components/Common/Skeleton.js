@@ -82,3 +82,42 @@ export const FileListSkeleton = ({ count = 5 }) => (
 );
 
 export default SkeletonBlock;
+
+
+// ── Material detail page skeleton ─────────────────────────────────
+// Shown while the API call for material metadata is in-flight.
+// `type` can be 'pdf' | 'image' | null (null = unknown, defaults to pdf look)
+export const MaterialDetailSkeleton = ({ type = 'pdf' }) => (
+  <div className="material-detail-skeleton">
+    {/* Fake header bar */}
+    <div className="viewer-header-skeleton">
+      <SkeletonBlock className="skeleton-block vhs-title" />
+      {type === 'pdf' && (
+        <div className="vhs-toolbar">
+          <SkeletonBlock className="skeleton-block vhs-btn" />
+          <SkeletonBlock className="skeleton-block vhs-btn" />
+          <SkeletonBlock className="skeleton-block vhs-btn" />
+        </div>
+      )}
+      <SkeletonBlock className="skeleton-block vhs-close" />
+    </div>
+
+    {/* Fake content area */}
+    <div className="viewer-body-skeleton">
+      {type === 'image' ? (
+        <SkeletonBlock className="image-skeleton" />
+      ) : (
+        <>
+          <div className="pdf-page-skeleton" />
+          <div className="pdf-page-skeleton" />
+        </>
+      )}
+    </div>
+  </div>
+);
+
+// ── Per-page skeleton inside react-pdf ────────────────────────────
+// Drop this in as the `loading` prop of <Document> and <Page>.
+export const PdfPageSkeleton = () => (
+  <div className="pdf-page-loading-skeleton" />
+);
