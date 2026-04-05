@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaSearchPlus, FaSearchMinus, FaFileAlt, FaTimes } from 'react-icons/fa';
 import './Skeleton.scss';
 
 // ── Generic shimmer block ──────────────────────────────────────────
@@ -84,25 +85,49 @@ export const FileListSkeleton = ({ count = 5 }) => (
 export default SkeletonBlock;
 
 
-// ── Material detail page skeleton ─────────────────────────────────
-// Shown while the API call for material metadata is in-flight.
-// `type` can be 'pdf' | 'image' | null (null = unknown, defaults to pdf look)
-export const MaterialDetailSkeleton = ({ type = 'pdf' }) => (
+// ── Material detail skeleton ───────────────────────────────────────
+// Real header (title + live controls) + shimmer body.
+// `title`   — string, shown in the header exactly like the real viewer
+// `type`    — 'pdf' | 'image', controls which body skeleton to show
+// `onClose` — optional, wires up the Close button even during loading
+export const MaterialDetailSkeleton = ({ title = '', type = 'pdf', onClose }) => (
   <div className="material-detail-skeleton">
-    {/* Fake header bar */}
-    <div className="viewer-header-skeleton">
-      <SkeletonBlock className="skeleton-block vhs-title" />
-      {type === 'pdf' && (
-        <div className="vhs-toolbar">
-          <SkeletonBlock className="skeleton-block vhs-btn" />
-          <SkeletonBlock className="skeleton-block vhs-btn" />
-          <SkeletonBlock className="skeleton-block vhs-btn" />
+
+    {/* ── Real header — identical markup & classes to FileViewer ── */}
+    <div className="viewer-header">
+      <h3 className="file-title-display" style={{ color: 'var(--primary-color)' }}>
+        {title || <SkeletonBlock style={{ height: 20, width: 220, display: 'inline-block' }} />}
+      </h3>
+
+      {/* Toolbar — disabled buttons so layout matches exactly */}
+      {type !== 'image' && (
+        <div className="header-toolbar">
+          <button className="toolbar-button" disabled title="Zoom Out">
+            <FaSearchMinus />
+          </button>
+          <span className="zoom-level">100%</span>
+          <button className="toolbar-button" disabled title="Zoom In">
+            <FaSearchPlus />
+          </button>
+          <div className="toolbar-separator" />
+          <button className="toolbar-button" disabled>
+            <FaFileAlt /> Single
+          </button>
         </div>
       )}
-      <SkeletonBlock className="skeleton-block vhs-close" />
+
+      {/* Close button — functional if onClose is provided */}
+      <button
+        className="close-viewer-btn"
+        onClick={onClose || undefined}
+        disabled={!onClose}
+        style={{ opacity: onClose ? 1 : 0.5 }}
+      >
+        <FaTimes /> Close
+      </button>
     </div>
 
-    {/* Fake content area */}
+    {/* ── Shimmer body ─────────────────────────────────────────── */}
     <div className="viewer-body-skeleton">
       {type === 'image' ? (
         <SkeletonBlock className="image-skeleton" />
@@ -113,11 +138,11 @@ export const MaterialDetailSkeleton = ({ type = 'pdf' }) => (
         </>
       )}
     </div>
+
   </div>
 );
 
 // ── Per-page skeleton inside react-pdf ────────────────────────────
-// Drop this in as the `loading` prop of <Document> and <Page>.
 export const PdfPageSkeleton = () => (
   <div className="pdf-page-loading-skeleton" />
 );
