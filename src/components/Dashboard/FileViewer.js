@@ -1,23 +1,69 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { PdfPageSkeleton } from '../Common/Skeleton';
 import '../Common/Skeleton.scss';
 import './FileViewer.scss';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import { FaSearchPlus, FaSearchMinus, FaChevronLeft, FaChevronRight, FaFileAlt, FaFilePdf, FaTimes } from 'react-icons/fa';
+import {
+  FaSearchPlus, FaSearchMinus, FaChevronLeft, FaChevronRight,
+  FaFileAlt, FaFilePdf, FaTimes
+} from 'react-icons/fa';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
 
-// Image skeleton — reuses the same shimmer keyframe from Skeleton.scss
+// ── FadePage ────────────────────────────────────────────────────────
+// Wraps each react-pdf <Page> so it starts invisible and fades in once
+// the canvas has actually painted — eliminating the skeleton→page snap.
+const FadePage = ({ pageNumber, scale, renderTextLayer, renderAnnotationLayer }) => {
+  const [visible, setVisible] = useState(false);
+
+  const handleRenderSuccess = useCallback(() => {
+    // Give the browser one extra frame to composite the canvas before fading in
+    requestAnimationFrame(() => setVisible(true));
+  }, []);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {/* Skeleton sits behind the page until the page is ready */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        opacity: visible ? 0 : 1,
+        transition: 'opacity 0.3s ease',
+        pointerEvents: 'none',
+        zIndex: 1,
+      }}>
+        <PdfPageSkeleton />
+      </div>
+
+      {/* Page fades in over the skeleton */}
+      <div style={{
+        opacity: visible ? 1 : 0,
+        transition: 'opacity 0.3s ease',
+        position: 'relative',
+        zIndex: 2,
+      }}>
+        <Page
+          pageNumber={pageNumber}
+          scale={scale}
+          renderTextLayer={renderTextLayer}
+          renderAnnotationLayer={renderAnnotationLayer}
+          onRenderSuccess={handleRenderSuccess}
+          loading={null}
+          error={<div className="error-message">Error rendering page.</div>}
+        />
+      </div>
+    </div>
+  );
+};
+
+// ── Image skeleton ──────────────────────────────────────────────────
 const ImageLoadingSkeleton = () => (
-  <div className="skeleton-block" style={{
-    width: 'min(680px, 90%)',
-    height: '560px',
-    borderRadius: 10
-  }} />
+  <div className="skeleton-block" style={{ width: 'min(680px, 90%)', height: '560px', borderRadius: 10 }} />
 );
 
+// ── FileViewer ──────────────────────────────────────────────────────
 const FileViewer = ({ file, onClose, apiUrl, token }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -27,6 +73,8 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
   const [goToPageInput, setGoToPageInput] = useState('');
   const [watermarkedImageUrl, setWatermarkedImageUrl] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
+  // Tracks which page numbers have finished rendering (for single-page mode)
+  const [renderedPages, setRenderedPages] = useState({});
 
   const viewerRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -40,7 +88,13 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
     setGoToPageInput('');
     setWatermarkedImageUrl(null);
     setImageLoading(false);
+    setRenderedPages({});
   }, [file]);
+
+  // Reset rendered state when page changes in single-page mode
+  useEffect(() => {
+    setRenderedPages({});
+  }, [pageNumber, scale]);
 
   useEffect(() => {
     if (file && file.fileType === 'Image' && apiUrl && token) {
@@ -116,16 +170,14 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
     if (page >= 1 && page <= numPages) setPageNumber(page);
   };
 
-  if (!file) {
-    return <div className="file-viewer-placeholder">Select a file to view</div>;
-  }
+  if (!file) return <div className="file-viewer-placeholder">Select a file to view</div>;
 
   const isPdf = file.fileType === 'PDF';
 
   return (
     <div className="file-viewer-container">
 
-      {/* ── Header ─────────────────────────────────────────────── */}
+      {/* ── Header ──────────────────────────────────────────────── */}
       <div className="viewer-header">
         <h3 className="file-title-display">{file.title}</h3>
 
@@ -176,7 +228,7 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
         <button onClick={onClose} className="close-viewer-btn"><FaTimes /> Close</button>
       </div>
 
-      {/* ── Content ────────────────────────────────────────────── */}
+      {/* ── Content ─────────────────────────────────────────────── */}
       <div className="viewer-content">
 
         {/* PDF */}
@@ -197,24 +249,20 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
                   noData={<div className="no-pdf-data">No PDF data available.</div>}
                 >
                   {viewMode === 'single' ? (
-                    <Page
+                    <FadePage
                       pageNumber={pageNumber}
                       scale={scale}
                       renderTextLayer={true}
                       renderAnnotationLayer={true}
-                      loading={<PdfPageSkeleton />}
-                      error={<div className="error-message">Error rendering page.</div>}
                     />
                   ) : (
                     Array.from({ length: numPages }, (_, index) => (
-                      <Page
+                      <FadePage
                         key={`page_${index + 1}`}
                         pageNumber={index + 1}
                         scale={scale}
                         renderTextLayer={true}
                         renderAnnotationLayer={true}
-                        loading={<PdfPageSkeleton />}
-                        error={<div className="error-message">Error rendering page.</div>}
                       />
                     ))
                   )}
@@ -230,7 +278,12 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
             {imageLoading ? (
               <ImageLoadingSkeleton />
             ) : watermarkedImageUrl ? (
-              <img src={watermarkedImageUrl} alt={file.title} className="viewed-image" />
+              <img
+                src={watermarkedImageUrl}
+                alt={file.title}
+                className="viewed-image"
+                style={{ animation: 'mdp-fadein 0.35s ease' }}
+              />
             ) : (
               <div className="error-message">Failed to load image.</div>
             )}
