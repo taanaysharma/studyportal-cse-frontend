@@ -64,12 +64,25 @@ const ImageLoadingSkeleton = () => (
 );
 
 // ── UrlViewer ───────────────────────────────────────────────────────
-// Most sites block iframes via X-Frame-Options / CSP headers — this
-// cannot be bypassed from the frontend. Instead we show a clean card
-// that lets the user open the link in a new tab.
-const UrlViewer = ({ url, title }) => {
-  const [blocked, setBlocked] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+// The ONLY reliable solution for URL materials:
+//
+// 1. Ask our backend to HEAD-request the URL and read its response
+//    headers (X-Frame-Options, CSP frame-ancestors). The backend can
+//    do this because it is not subject to browser CORS/SOP restrictions.
+//
+// 2. If embeddable → show an iframe with a topbar.
+//    If blocked     → show a clean card with "Open in new tab".
+//    While checking → show a loading state.
+//
+// Why not just try the iframe and catch onError?
+//   Because browsers NEVER fire onError for X-Frame-Options/CSP blocks.
+//   They either show a blank white frame or Chrome's own "blocked" page.
+//   There is no JavaScript API to detect this from the parent page.
+
+const UrlViewer = ({ url, title, apiUrl, token }) => {
+  // 'checking' | 'embeddable' | 'blocked'
+  const [status, setStatus] = useState('checking');
+  const [iframeVisible, setIframeVisible] = useState(false);
 
   const displayUrl = url
     ? url.replace(/^https?:\/\//, '').replace(/\/$/, '')
@@ -82,45 +95,94 @@ const UrlViewer = ({ url, title }) => {
 
   const faviconUrl = origin ? `${origin}/favicon.ico` : null;
 
-  if (blocked) {
+  useEffect(() => {
+    if (!url || !apiUrl || !token) return;
+    setStatus('checking');
+    setIframeVisible(false);
+
+    const controller = new AbortController();
+
+    axios.get(
+      `${apiUrl}/proxy/check-url?url=${encodeURIComponent(url)}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        signal: controller.signal,
+      }
+    )
+      .then(res => {
+        if (res.data.success) {
+          setStatus(res.data.embeddable ? 'embeddable' : 'blocked');
+        } else {
+          setStatus('blocked');
+        }
+      })
+      .catch(() => setStatus('blocked')); // Network error → treat as blocked
+
+    return () => controller.abort();
+  }, [url, apiUrl, token]);
+
+  // ── Shared link card (used in both blocked and embeddable views) ──
+  const LinkCard = () => (
+    <div className="url-link-card">
+      {faviconUrl && (
+        <img
+          src={faviconUrl}
+          alt=""
+          className="url-favicon"
+          onError={(e) => { e.target.style.display = 'none'; }}
+        />
+      )}
+      <div className="url-link-info">
+        <span className="url-link-title">{title}</span>
+        <span className="url-link-domain">{displayUrl}</span>
+      </div>
+      <a href={url} target="_blank" rel="noopener noreferrer" className="url-open-btn">
+        <FaExternalLinkAlt /> Open in new tab
+      </a>
+    </div>
+  );
+
+  // ── Checking ──────────────────────────────────────────────────────
+  if (status === 'checking') {
+    return (
+      <div className="url-viewer">
+        <div className="url-blocked-card">
+          <div className="url-checking-spinner" />
+          <p style={{ color: 'var(--secondary-color)', marginTop: 16 }}>
+            Checking if this link can be previewed…
+          </p>
+          <LinkCard />
+        </div>
+      </div>
+    );
+  }
+
+  // ── Blocked ───────────────────────────────────────────────────────
+  if (status === 'blocked') {
     return (
       <div className="url-viewer">
         <div className="url-blocked-card">
           <div className="url-blocked-icon"><FaExclamationTriangle /></div>
           <h3>Cannot preview this link</h3>
           <p>
-            <strong>{displayUrl}</strong> has blocked embedding for security reasons.
-            This is a restriction set by the website itself and cannot be bypassed.
+            <strong>{displayUrl}</strong> has blocked embedding for security
+            reasons — this is enforced by the website itself and cannot be bypassed
+            by any viewer.
           </p>
-          <div className="url-link-card">
-            {faviconUrl && (
-              <img
-                src={faviconUrl}
-                alt=""
-                className="url-favicon"
-                onError={(e) => { e.target.style.display = "none"; }}
-              />
-            )}
-            <div className="url-link-info">
-              <span className="url-link-title">{title}</span>
-              <span className="url-link-domain">{displayUrl}</span>
-            </div>
-            <a href={url} target="_blank" rel="noopener noreferrer" className="url-open-btn">
-              <FaExternalLinkAlt /> Open in new tab
-            </a>
-          </div>
+          <LinkCard />
           <p className="url-hint">
-            Tip: For best results, upload PDFs or images directly instead of links.
+            Tip: Download the file and upload it as a PDF or image for the best experience.
           </p>
         </div>
       </div>
     );
   }
 
+  // ── Embeddable ────────────────────────────────────────────────────
   return (
     <div className="url-viewer">
       <div className="url-topbar">
-        <FaLink style={{ flexShrink: 0, color: "var(--secondary-color)" }} />
+        <FaLink style={{ flexShrink: 0, color: 'var(--secondary-color)' }} />
         <span className="url-topbar-domain">{displayUrl}</span>
         <a href={url} target="_blank" rel="noopener noreferrer" className="url-topbar-link">
           <FaExternalLinkAlt /> Open in new tab
@@ -130,11 +192,9 @@ const UrlViewer = ({ url, title }) => {
         key={url}
         src={url}
         title={title}
-        className={`external-iframe ${loaded ? "iframe-loaded" : ""}`}
+        className={`external-iframe ${iframeVisible ? 'iframe-loaded' : ''}`}
         allowFullScreen
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals"
-        onLoad={() => setLoaded(true)}
-        onError={() => setBlocked(true)}
+        onLoad={() => setIframeVisible(true)}
       />
     </div>
   );
@@ -369,7 +429,7 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
 
         {/* URL viewer */}
         {file.fileType === 'URL' && (
-          <UrlViewer url={file.externalUrl} title={file.title} />
+          <UrlViewer url={file.externalUrl} title={file.title} apiUrl={apiUrl} token={token} />
         )}
 
       </div>
