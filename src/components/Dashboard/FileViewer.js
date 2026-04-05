@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { PdfPageSkeleton } from '../Common/Skeleton';
+import '../Common/Skeleton.scss';
 import './FileViewer.scss';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -8,15 +9,12 @@ import { FaSearchPlus, FaSearchMinus, FaChevronLeft, FaChevronRight, FaFileAlt, 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
 
-// ── Image skeleton shown while the watermarked blob is fetching ────
+// Image skeleton — reuses the same shimmer keyframe from Skeleton.scss
 const ImageLoadingSkeleton = () => (
-  <div style={{
+  <div className="skeleton-block" style={{
     width: 'min(680px, 90%)',
     height: '560px',
-    borderRadius: 10,
-    background: 'linear-gradient(90deg, var(--input-background) 25%, var(--border-color) 50%, var(--input-background) 75%)',
-    backgroundSize: '1200px 100%',
-    animation: 'skeleton-shimmer 1.6s ease-in-out infinite'
+    borderRadius: 10
   }} />
 );
 
@@ -44,7 +42,6 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
     setImageLoading(false);
   }, [file]);
 
-  // Fetch watermarked image blob
   useEffect(() => {
     if (file && file.fileType === 'Image' && apiUrl && token) {
       setImageLoading(true);
@@ -55,8 +52,7 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
           return res.blob();
         })
         .then(blob => {
-          const url = URL.createObjectURL(blob);
-          setWatermarkedImageUrl(url);
+          setWatermarkedImageUrl(URL.createObjectURL(blob));
           setImageLoading(false);
         })
         .catch(err => {
@@ -99,8 +95,7 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
     const container = scrollContainerRef.current;
     if (container) {
       const scrollRatio = container.scrollHeight > 0
-        ? container.scrollTop / container.scrollHeight
-        : 0;
+        ? container.scrollTop / container.scrollHeight : 0;
       setScale(prev => {
         const next = zoomIn ? Math.min(prev + 0.25, 3.0) : Math.max(prev - 0.25, 0.25);
         requestAnimationFrame(() => {
@@ -109,7 +104,9 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
         return next;
       });
     } else {
-      setScale(prev => zoomIn ? Math.min(prev + 0.25, 3.0) : Math.max(prev - 0.25, 0.25));
+      setScale(prev => zoomIn
+        ? Math.min(prev + 0.25, 3.0)
+        : Math.max(prev - 0.25, 0.25));
     }
   };
 
@@ -182,7 +179,7 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
       {/* ── Content ────────────────────────────────────────────── */}
       <div className="viewer-content">
 
-        {/* PDF ─────────────────────────────────────────────────── */}
+        {/* PDF */}
         {isPdf && (
           <div className="pdf-viewer" ref={viewerRef}>
             {pdfError ? (
@@ -227,7 +224,7 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
           </div>
         )}
 
-        {/* Image ───────────────────────────────────────────────── */}
+        {/* Image */}
         {file.fileType === 'Image' && (
           <div className="image-viewer">
             {imageLoading ? (
@@ -240,7 +237,7 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
           </div>
         )}
 
-        {/* URL iframe ──────────────────────────────────────────── */}
+        {/* URL iframe */}
         {file.fileType === 'URL' && (
           <div className="url-viewer">
             <p className="url-warning">
