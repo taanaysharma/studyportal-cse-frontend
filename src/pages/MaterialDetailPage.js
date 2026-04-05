@@ -13,8 +13,6 @@ const MaterialDetailPage = () => {
   const [material, setMaterial] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // Controls the cross-fade: skeleton stays mounted but fades out
-  // while FileViewer fades in on top of it.
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -42,7 +40,7 @@ const MaterialDetailPage = () => {
     if (id && token) fetchMaterial();
   }, [id, API_URL, token]);
 
-  // Once material is ready, trigger the cross-fade on next paint
+  // Cross-fade: once material is ready, trigger reveal on next paint
   useEffect(() => {
     if (!loading && material) {
       requestAnimationFrame(() => {
@@ -51,7 +49,7 @@ const MaterialDetailPage = () => {
     }
   }, [loading, material]);
 
-  const handleCloseViewer = () => {
+  const handleClose = () => {
     if (material) {
       navigate('/dashboard', {
         state: {
@@ -75,7 +73,8 @@ const MaterialDetailPage = () => {
 
   return (
     <div className="material-detail-page">
-      {/* Skeleton sits underneath, fades out once content is ready */}
+
+      {/* Skeleton layer — real header, shimmer body, fades out on reveal */}
       <div
         className="mdp-layer"
         style={{
@@ -84,10 +83,14 @@ const MaterialDetailPage = () => {
           pointerEvents: revealed ? 'none' : 'auto',
         }}
       >
-        <MaterialDetailSkeleton type={material?.fileType === 'Image' ? 'image' : 'pdf'} />
+        <MaterialDetailSkeleton
+          title={material?.title || ''}
+          type={material?.fileType === 'Image' ? 'image' : 'pdf'}
+          onClose={handleClose}
+        />
       </div>
 
-      {/* FileViewer fades in over the skeleton */}
+      {/* FileViewer layer — fades in on reveal */}
       {material && (
         <div
           className="mdp-layer"
@@ -99,12 +102,13 @@ const MaterialDetailPage = () => {
         >
           <FileViewer
             file={material}
-            onClose={handleCloseViewer}
+            onClose={handleClose}
             apiUrl={API_URL}
             token={token}
           />
         </div>
       )}
+
     </div>
   );
 };
