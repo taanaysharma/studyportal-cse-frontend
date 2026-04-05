@@ -13,10 +13,14 @@ const MaterialDetailPage = () => {
   const [material, setMaterial] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Controls the cross-fade: skeleton stays mounted but fades out
+  // while FileViewer fades in on top of it.
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const fetchMaterial = async () => {
       setLoading(true);
+      setRevealed(false);
       setError(null);
       try {
         const res = await axios.get(`${API_URL}/materials/${id}`, {
@@ -38,6 +42,15 @@ const MaterialDetailPage = () => {
     if (id && token) fetchMaterial();
   }, [id, API_URL, token]);
 
+  // Once material is ready, trigger the cross-fade on next paint
+  useEffect(() => {
+    if (!loading && material) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setRevealed(true));
+      });
+    }
+  }, [loading, material]);
+
   const handleCloseViewer = () => {
     if (material) {
       navigate('/dashboard', {
@@ -52,13 +65,6 @@ const MaterialDetailPage = () => {
     }
   };
 
-  // Show skeleton that matches the file type we're about to display.
-  // We don't know the type yet while loading, so default to 'pdf'
-  // (which gives the most realistic preview for most materials).
-  if (loading) {
-    return <MaterialDetailSkeleton type="pdf" />;
-  }
-
   if (error) {
     return (
       <div className="material-detail-page">
@@ -67,17 +73,38 @@ const MaterialDetailPage = () => {
     );
   }
 
-  if (!material) {
-    return (
-      <div className="material-detail-page">
-        <div className="material-detail-page-info message-box info">Material not found.</div>
-      </div>
-    );
-  }
-
   return (
     <div className="material-detail-page">
-      <FileViewer file={material} onClose={handleCloseViewer} apiUrl={API_URL} token={token} />
+      {/* Skeleton sits underneath, fades out once content is ready */}
+      <div
+        className="mdp-layer"
+        style={{
+          opacity: revealed ? 0 : 1,
+          transition: 'opacity 0.35s ease',
+          pointerEvents: revealed ? 'none' : 'auto',
+        }}
+      >
+        <MaterialDetailSkeleton type={material?.fileType === 'Image' ? 'image' : 'pdf'} />
+      </div>
+
+      {/* FileViewer fades in over the skeleton */}
+      {material && (
+        <div
+          className="mdp-layer"
+          style={{
+            opacity: revealed ? 1 : 0,
+            transition: 'opacity 0.35s ease',
+            pointerEvents: revealed ? 'auto' : 'none',
+          }}
+        >
+          <FileViewer
+            file={material}
+            onClose={handleCloseViewer}
+            apiUrl={API_URL}
+            token={token}
+          />
+        </div>
+      )}
     </div>
   );
 };
