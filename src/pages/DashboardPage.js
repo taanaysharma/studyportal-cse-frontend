@@ -7,9 +7,9 @@ import FolderList from '../components/Dashboard/FolderList';
 import FileList from '../components/Dashboard/FileList';
 import Announcements from '../components/Dashboard/Announcements';
 import FeedbackForm from '../components/Common/FeedbackForm';
-import LoadingSpinner from '../components/Common/LoadingSpinner';
 import ContributeForm from '../components/Dashboard/ContributeForm';
 import SupportChat from '../components/Dashboard/SupportChat';
+import { SubjectsGridSkeleton, FolderListSkeleton, FileListSkeleton } from '../components/Common/Skeleton';
 import { AuthContext } from '../context/AuthContext';
 import './DashboardPage.scss';
 
@@ -22,7 +22,11 @@ const DashboardPage = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [materials, setMaterials] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  // Two separate loading states so skeletons are context-aware
+  const [loadingDashboard, setLoadingDashboard] = useState(true);
+  const [loadingMaterials, setLoadingMaterials] = useState(false);
+
   const [error, setError] = useState(null);
   const [currentView, setCurrentView] = useState('announcements');
 
@@ -31,9 +35,10 @@ const DashboardPage = () => {
     setSelectedCategory(null);
   }, []);
 
+  // Initial dashboard load — subjects & semester
   useEffect(() => {
     const fetchDashboardData = async () => {
-      setLoading(true);
+      setLoadingDashboard(true);
       setError(null);
       try {
         const semesterRes = await axios.get(`${API_URL}/settings/current-semester`, {
@@ -54,15 +59,14 @@ const DashboardPage = () => {
         console.error('Error fetching dashboard data:', err);
         setError('Failed to load dashboard data. Please try again.');
       } finally {
-        setLoading(false);
+        setLoadingDashboard(false);
       }
     };
 
-    if (user && token) {
-      fetchDashboardData();
-    }
+    if (user && token) fetchDashboardData();
   }, [user, API_URL, token]);
 
+  // Restore view from navigation state (e.g. back from file viewer)
   useEffect(() => {
     if (location.state && location.state.previousView) {
       setCurrentView(location.state.previousView);
@@ -74,10 +78,11 @@ const DashboardPage = () => {
     }
   }, [location.state, navigate, location.pathname]);
 
+  // Fetch materials when subject + category selected
   useEffect(() => {
     const fetchMaterials = async () => {
       if (selectedSubject && selectedCategory) {
-        setLoading(true);
+        setLoadingMaterials(true);
         setError(null);
         try {
           const res = await axios.get(
@@ -93,14 +98,12 @@ const DashboardPage = () => {
           console.error('Error fetching materials:', err);
           setError('Failed to load materials. Please try again.');
         } finally {
-          setLoading(false);
+          setLoadingMaterials(false);
         }
       }
     };
 
-    if (currentView === 'materials') {
-      fetchMaterials();
-    }
+    if (currentView === 'materials') fetchMaterials();
   }, [selectedSubject, selectedCategory, API_URL, token, currentView]);
 
   const handleSubjectClick = (subject) => {
@@ -141,7 +144,6 @@ const DashboardPage = () => {
     resetStudyMaterialView();
   }, [resetStudyMaterialView]);
 
-  // NEW handlers
   const handleShowContribute = useCallback(() => {
     setCurrentView('contribute');
     resetStudyMaterialView();
@@ -152,12 +154,14 @@ const DashboardPage = () => {
     resetStudyMaterialView();
   }, [resetStudyMaterialView]);
 
-  if (loading) {
-    return <DashboardLayout><LoadingSpinner /></DashboardLayout>;
-  }
+  // ── Render ───────────────────────────────────────────────────────
 
   if (error) {
-    return <DashboardLayout><div className="dashboard-error message-box error">{error}</div></DashboardLayout>;
+    return (
+      <DashboardLayout>
+        <div className="dashboard-error message-box error">{error}</div>
+      </DashboardLayout>
+    );
   }
 
   return (
@@ -170,9 +174,9 @@ const DashboardPage = () => {
     >
       <div className="dashboard-page">
         {currentView === 'announcements' && <Announcements />}
-        {currentView === 'feedback' && <FeedbackForm />}
-        {currentView === 'contribute' && <ContributeForm />}
-        {currentView === 'support' && <SupportChat />}
+        {currentView === 'feedback'      && <FeedbackForm />}
+        {currentView === 'contribute'    && <ContributeForm />}
+        {currentView === 'support'       && <SupportChat />}
 
         {currentView === 'materials' && (
           <>
@@ -189,31 +193,42 @@ const DashboardPage = () => {
             )}
 
             {!selectedSubject ? (
-              <div className="semester-section">
-                <h2>Current Semester: Semester {currentSemester}</h2>
-                <div className="subjects-grid">
-                  {subjects.length === 0 ? (
-                    <p className="no-subjects-message">No subjects found for this semester yet.</p>
-                  ) : (
-                    subjects.map((subject) => (
-                      <SubjectCard key={subject._id} subject={subject} onClick={handleSubjectClick} />
-                    ))
-                  )}
+              // ── Subjects grid (or its skeleton) ─────────────────
+              loadingDashboard ? (
+                <SubjectsGridSkeleton count={6} />
+              ) : (
+                <div className="semester-section">
+                  <h2>Current Semester: Semester {currentSemester}</h2>
+                  <div className="subjects-grid">
+                    {subjects.length === 0 ? (
+                      <p className="no-subjects-message">No subjects found for this semester yet.</p>
+                    ) : (
+                      subjects.map((subject) => (
+                        <SubjectCard key={subject._id} subject={subject} onClick={handleSubjectClick} />
+                      ))
+                    )}
+                  </div>
                 </div>
-              </div>
+              )
             ) : (
               <>
                 {!selectedCategory ? (
+                  // ── Folder list (instant — no loading needed) ───
                   <FolderList onSelectFolder={handleSelectFolder} />
                 ) : (
-                  <FileList
-                    files={materials}
-                    onSelectFile={handleSelectFile}
-                    selectedCategory={selectedCategory}
-                    selectedSubject={selectedSubject}
-                    apiUrl={API_URL}
-                    token={token}
-                  />
+                  // ── File list (or its skeleton while fetching) ──
+                  loadingMaterials ? (
+                    <FileListSkeleton count={5} />
+                  ) : (
+                    <FileList
+                      files={materials}
+                      onSelectFile={handleSelectFile}
+                      selectedCategory={selectedCategory}
+                      selectedSubject={selectedSubject}
+                      apiUrl={API_URL}
+                      token={token}
+                    />
+                  )
                 )}
               </>
             )}
