@@ -1,18 +1,18 @@
 // ─── Skeleton Loader ───────────────────────────────────────────────
-// Single shimmer animation reused across all skeleton shapes.
-// Uses your existing CSS variables so it works in both light & dark mode.
+// Uses CSS variables so shimmer works in both light & dark mode.
+// Uses @mixin instead of %placeholder — safe across webpack file imports.
 
 @keyframes skeleton-shimmer {
   0%   { background-position: -600px 0; }
   100% { background-position:  600px 0; }
 }
 
-%skeleton-base {
+@mixin shimmer {
   background: linear-gradient(
     90deg,
-    var(--input-background)   25%,
-    var(--border-color)        50%,
-    var(--input-background)   75%
+    var(--input-background)  25%,
+    var(--border-color)       50%,
+    var(--input-background)  75%
   );
   background-size: 1200px 100%;
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
@@ -21,7 +21,7 @@
 
 // ── Generic block ──────────────────────────────────────────────────
 .skeleton-block {
-  @extend %skeleton-base;
+  @include shimmer;
   width: 100%;
   height: 16px;
 
@@ -83,7 +83,7 @@
   }
 }
 
-// ── Dashboard initial load skeleton ───────────────────────────────
+// ── Dashboard skeleton ─────────────────────────────────────────────
 .dashboard-skeleton {
   padding: 24px;
   max-width: 1200px;
@@ -93,7 +93,6 @@
     display: flex;
     justify-content: center;
     margin-bottom: 28px;
-
     .skeleton-block { border-radius: 8px; }
   }
 
@@ -104,24 +103,19 @@
   }
 }
 
+// ─── Material Detail / Viewer Skeletons ───────────────────────────
 
-// ─── Material Detail / File Viewer Skeletons ──────────────────────
-
-// Full-page skeleton shown while material metadata is fetching
 .material-detail-skeleton {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: var(--background-color);
   display: flex;
   flex-direction: column;
   z-index: 2000;
-.vhs-toolbar { display: flex; gap: 10px; align-items: center; }
-    .vhs-btn     { height: 32px; width: 80px; border-radius: 6px; }
-    .vhs-close   { height: 32px; width: 72px; border-radius: 6px; }
-  }
 
-  // Content area — PDF page placeholders
   .viewer-body-skeleton {
     flex: 1;
     overflow: hidden;
@@ -132,7 +126,7 @@
     gap: 12px;
 
     .pdf-page-skeleton {
-      @extend %skeleton-base;
+      @include shimmer;
       width: min(680px, 92%);
       border-radius: 8px;
       flex-shrink: 0;
@@ -142,7 +136,7 @@
     }
 
     .image-skeleton {
-      @extend %skeleton-base;
+      @include shimmer;
       width: min(680px, 92%);
       height: 560px;
       border-radius: 10px;
@@ -150,9 +144,8 @@
   }
 }
 
-// Per-page skeleton inside react-pdf while individual pages render
 .pdf-page-loading-skeleton {
-  @extend %skeleton-base;
+  @include shimmer;
   width: min(660px, 90vw);
   height: 860px;
   border-radius: 6px;
