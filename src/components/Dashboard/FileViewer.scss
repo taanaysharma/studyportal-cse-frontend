@@ -375,8 +375,13 @@
   width: 90%;
   box-shadow: $shadow-sm;
 }
-// ── Fade-in for image viewer ───────────────────────────────────────
+// ── Keyframe animations ───────────────────────────────────────────
 @keyframes mdp-fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
