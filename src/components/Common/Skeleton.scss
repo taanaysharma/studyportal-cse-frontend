@@ -103,3 +103,71 @@
     gap: 20px;
   }
 }
+
+
+// ─── Material Detail / File Viewer Skeletons ──────────────────────
+
+// Full-page skeleton shown while material metadata is fetching
+.material-detail-skeleton {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 2000;
+
+  // Mirrors the real viewer-header bar
+  .viewer-header-skeleton {
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-shrink: 0;
+
+    .vhs-title   { height: 20px; width: 240px; }
+    .vhs-toolbar { display: flex; gap: 10px; align-items: center; }
+    .vhs-btn     { height: 32px; width: 80px; border-radius: 6px; }
+    .vhs-close   { height: 32px; width: 72px; border-radius: 6px; }
+  }
+
+  // Content area — PDF page placeholders
+  .viewer-body-skeleton {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    gap: 12px;
+
+    .pdf-page-skeleton {
+      @extend %skeleton-base;
+      width: min(680px, 92%);
+      border-radius: 8px;
+      flex-shrink: 0;
+
+      &:nth-child(1) { height: 880px; }
+      &:nth-child(2) { height: 200px; opacity: 0.45; }
+    }
+
+    .image-skeleton {
+      @extend %skeleton-base;
+      width: min(680px, 92%);
+      height: 560px;
+      border-radius: 10px;
+    }
+  }
+}
+
+// Per-page skeleton inside react-pdf while individual pages render
+.pdf-page-loading-skeleton {
+  @extend %skeleton-base;
+  width: min(660px, 90vw);
+  height: 860px;
+  border-radius: 6px;
+  margin: 8px auto;
+}
