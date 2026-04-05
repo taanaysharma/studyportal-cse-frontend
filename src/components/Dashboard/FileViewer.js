@@ -7,7 +7,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import {
   FaSearchPlus, FaSearchMinus, FaChevronLeft, FaChevronRight,
-  FaFileAlt, FaFilePdf, FaTimes
+  FaFileAlt, FaFilePdf, FaTimes, FaExternalLinkAlt, FaLink, FaExclamationTriangle
 } from 'react-icons/fa';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
@@ -62,6 +62,83 @@ const FadePage = ({ pageNumber, scale, renderTextLayer, renderAnnotationLayer })
 const ImageLoadingSkeleton = () => (
   <div className="skeleton-block" style={{ width: 'min(680px, 90%)', height: '560px', borderRadius: 10 }} />
 );
+
+// ── UrlViewer ───────────────────────────────────────────────────────
+// Most sites block iframes via X-Frame-Options / CSP headers — this
+// cannot be bypassed from the frontend. Instead we show a clean card
+// that lets the user open the link in a new tab.
+const UrlViewer = ({ url, title }) => {
+  const [blocked, setBlocked] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  const displayUrl = url
+    ? url.replace(/^https?:\/\//, '').replace(/\/$/, '')
+    : '';
+
+  const origin = (() => {
+    try { return new URL(url).origin; }
+    catch { return null; }
+  })();
+
+  const faviconUrl = origin ? `${origin}/favicon.ico` : null;
+
+  if (blocked) {
+    return (
+      <div className="url-viewer">
+        <div className="url-blocked-card">
+          <div className="url-blocked-icon"><FaExclamationTriangle /></div>
+          <h3>Cannot preview this link</h3>
+          <p>
+            <strong>{displayUrl}</strong> has blocked embedding for security reasons.
+            This is a restriction set by the website itself and cannot be bypassed.
+          </p>
+          <div className="url-link-card">
+            {faviconUrl && (
+              <img
+                src={faviconUrl}
+                alt=""
+                className="url-favicon"
+                onError={(e) => { e.target.style.display = "none"; }}
+              />
+            )}
+            <div className="url-link-info">
+              <span className="url-link-title">{title}</span>
+              <span className="url-link-domain">{displayUrl}</span>
+            </div>
+            <a href={url} target="_blank" rel="noopener noreferrer" className="url-open-btn">
+              <FaExternalLinkAlt /> Open in new tab
+            </a>
+          </div>
+          <p className="url-hint">
+            Tip: For best results, upload PDFs or images directly instead of links.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="url-viewer">
+      <div className="url-topbar">
+        <FaLink style={{ flexShrink: 0, color: "var(--secondary-color)" }} />
+        <span className="url-topbar-domain">{displayUrl}</span>
+        <a href={url} target="_blank" rel="noopener noreferrer" className="url-topbar-link">
+          <FaExternalLinkAlt /> Open in new tab
+        </a>
+      </div>
+      <iframe
+        key={url}
+        src={url}
+        title={title}
+        className={`external-iframe ${loaded ? "iframe-loaded" : ""}`}
+        allowFullScreen
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals"
+        onLoad={() => setLoaded(true)}
+        onError={() => setBlocked(true)}
+      />
+    </div>
+  );
+};
 
 // ── FileViewer ──────────────────────────────────────────────────────
 const FileViewer = ({ file, onClose, apiUrl, token }) => {
@@ -290,21 +367,9 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
           </div>
         )}
 
-        {/* URL iframe */}
+        {/* URL viewer */}
         {file.fileType === 'URL' && (
-          <div className="url-viewer">
-            <p className="url-warning">
-              Viewing external content. Content may not be fully responsive or interactive
-              within this iframe due to security restrictions.
-            </p>
-            <iframe
-              src={file.externalUrl}
-              title={file.title}
-              className="external-iframe"
-              allowFullScreen
-              sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals"
-            />
-          </div>
+          <UrlViewer url={file.externalUrl} title={file.title} />
         )}
 
       </div>
