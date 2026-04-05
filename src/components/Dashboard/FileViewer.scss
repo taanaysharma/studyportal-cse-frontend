@@ -218,3 +218,8 @@
   width: 90%;
   box-shadow: $shadow-sm;
 }
+// ── Fade-in for image viewer ───────────────────────────────────────
+@keyframes mdp-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
