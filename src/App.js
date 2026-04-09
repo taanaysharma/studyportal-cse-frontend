@@ -18,6 +18,7 @@ import ResetPassword from './components/Auth/ResetPassword';
 import HtmlViewer from './components/Common/HtmlViewer';
 
 import './App.scss';
+import AppLoader from './components/Common/AppLoader';
 import './styles/global.scss';
 
 function App() {
@@ -59,7 +60,7 @@ function App() {
 
 
   if (loading) {
-    return <div className="app-loading">Loading application...</div>;
+    return <AppLoader />;
   }
 
   return (
@@ -122,4 +123,4 @@ const AppContent = () => {
   );
 };
 
-export default App; 
+export default App;
