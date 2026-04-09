@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'; 
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 import { ThemeContext } from './context/ThemeContext';
 import ProtectedRoute from './ProtectedRoute';
@@ -19,19 +19,12 @@ import HtmlViewer from './components/Common/HtmlViewer';
 
 import './App.scss';
 import AppLoader from './components/Common/AppLoader';
-import './styles/global.scss';
+// FIX: Removed duplicate import of global.scss (already imported in index.js)
 
 function App() {
-  const { user, loading, checkAuthStatus } = useContext(AuthContext);
-  const { theme } = useContext(ThemeContext);
-
-  useEffect(() => {
-    checkAuthStatus();
-  }, [checkAuthStatus]);
-
-  useEffect(() => {
-    document.body.className = theme;
-  }, [theme]);
+  // FIX: Removed duplicate checkAuthStatus() call — AuthContext already runs it on mount
+  // FIX: Removed duplicate document.body.className setter — ThemeContext already handles it
+  const { loading } = useContext(AuthContext);
 
   useEffect(() => {
     const handleContextMenu = (e) => {
@@ -58,28 +51,30 @@ function App() {
     };
   }, []);
 
-
   if (loading) {
     return <AppLoader />;
   }
 
   return (
     <Router>
-      <AppContent /> 
+      <AppContent />
     </Router>
   );
 }
 
 const AppContent = () => {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate(); 
+  // FIX: Moved useContext call to top level — hooks cannot be called inside JSX expressions
+  const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   const handleHtmlViewerBack = () => {
     navigate('/dashboard', { state: { previousView: 'announcements' } });
   };
 
   return (
-    <div className={`app-container ${useContext(ThemeContext).theme}`}>
+    // FIX: Now uses the `theme` variable declared at the top of the component
+    <div className={`app-container ${theme}`}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
@@ -98,7 +93,7 @@ const AppContent = () => {
               <HtmlViewer
                 title="CSE 2nd Year Syllabus"
                 src={`${process.env.PUBLIC_URL}/syllabus.html`}
-                onBack={handleHtmlViewerBack} 
+                onBack={handleHtmlViewerBack}
               />
             </ProtectedRoute>
           }
@@ -110,7 +105,7 @@ const AppContent = () => {
               <HtmlViewer
                 title="Subject Guidelines"
                 src={`${process.env.PUBLIC_URL}/subject-guidelines.html`}
-                onBack={handleHtmlViewerBack} 
+                onBack={handleHtmlViewerBack}
               />
             </ProtectedRoute>
           }
