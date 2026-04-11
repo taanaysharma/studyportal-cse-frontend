@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import axios from 'axios';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { PdfPageSkeleton } from '../Common/Skeleton';
 import '../Common/Skeleton.scss';
