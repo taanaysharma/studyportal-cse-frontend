@@ -24,6 +24,7 @@ import AppLoader from './components/Common/AppLoader';
 function App() {
   // FIX: Removed duplicate checkAuthStatus() call — AuthContext already runs it on mount
   // FIX: Removed duplicate document.body.className setter — ThemeContext already handles it
+  // FIX: Removed unused `user` destructure — only `loading` is needed here
   const { loading } = useContext(AuthContext);
 
   useEffect(() => {
