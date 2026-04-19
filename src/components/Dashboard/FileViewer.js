@@ -8,7 +8,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import {
   FaSearchPlus, FaSearchMinus, FaChevronLeft, FaChevronRight,
-  FaFileAlt, FaFilePdf, FaTimes, FaExternalLinkAlt, FaLink, FaExclamationTriangle
+  FaFileAlt, FaFilePdf, FaTimes, FaExternalLinkAlt, FaLink, FaExclamationTriangle, FaDownload
 } from 'react-icons/fa';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
@@ -217,8 +217,33 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
   const viewerRef = useRef(null);
   const scrollContainerRef = useRef(null);
 
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (!file || !apiUrl || !token) return;
+    setIsDownloading(true);
+    try {
+      const response = await fetch(`${apiUrl}/materials/${file._id}/download`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Download failed');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${file.title}.${file.fileType === 'PDF' ? 'pdf' : 'png'}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download error:', err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   useEffect(() => {
-    setPageNumber(1);
     setNumPages(null);
     setPdfError(null);
     setScale(1.0);
@@ -363,6 +388,16 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
           </div>
         )}
 
+        {(file.fileType === 'PDF' || file.fileType === 'Image') && (
+          <button
+            onClick={handleDownload}
+            className="toolbar-button download-btn"
+            title="Download"
+            disabled={isDownloading}
+          >
+            <FaDownload /> {isDownloading ? 'Downloading…' : 'Download'}
+          </button>
+        )}
         <button onClick={onClose} className="close-viewer-btn"><FaTimes /> Close</button>
       </div>
 
