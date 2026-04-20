@@ -388,16 +388,16 @@ const FileViewer = ({ file, onClose, apiUrl, token }) => {
           </div>
         )}
 
-        {(file.fileType === 'PDF' || file.fileType === 'Image') && (
-          <button
-            onClick={handleDownload}
-            className="toolbar-button download-btn"
-            title="Download"
-            disabled={isDownloading}
-          >
-            <FaDownload /> {isDownloading ? 'Downloading…' : 'Download'}
-          </button>
-        )}
+        // {(file.fileType === 'PDF' || file.fileType === 'Image') && (
+        //   <button
+        //     onClick={handleDownload}
+        //     className="toolbar-button download-btn"
+        //     title="Download"
+        //     disabled={isDownloading}
+        //   >
+        //     <FaDownload /> {isDownloading ? 'Downloading…' : 'Download'}
+        //   </button>
+        // )}
         <button onClick={onClose} className="close-viewer-btn"><FaTimes /> Close</button>
       </div>
 
