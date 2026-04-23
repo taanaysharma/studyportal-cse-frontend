@@ -11,7 +11,10 @@ import {
   FaFileAlt, FaFilePdf, FaTimes, FaExternalLinkAlt, FaLink, FaExclamationTriangle, FaDownload
 } from 'react-icons/fa';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 // ── FadePage ────────────────────────────────────────────────────────
 // Wraps each react-pdf <Page> so it starts invisible and fades in once
